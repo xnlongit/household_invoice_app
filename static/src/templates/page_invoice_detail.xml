@@ -1,0 +1,103 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+<data>
+
+<!-- ================================================================
+     Trang chi tiết hóa đơn
+================================================================ -->
+<template id="page_invoice_detail" name="Trang chi tiết hóa đơn">
+    <html class="light" lang="vi">
+    <head>
+        <meta charset="utf-8"/>
+        <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+        <title>Chi tiết hóa đơn | LedgerCurator</title>
+        <t t-call="household_invoice_app.assets_common"/>
+    </head>
+    <body class="bg-background text-on-background min-h-screen">
+        <t t-call="household_invoice_app.topnav"/>
+
+        <main class="max-w-7xl mx-auto px-8 py-10">
+
+            <!-- Back -->
+            <a href="/app/invoices"
+               class="inline-flex items-center gap-2 text-on-surface-variant hover:text-primary transition-colors text-sm font-medium mb-8">
+                <span class="material-symbols-outlined text-sm">arrow_back</span>
+                Danh sách hóa đơn
+            </a>
+
+            <!-- Loading skeleton -->
+            <div id="invoice-loading" class="space-y-6">
+                <div class="skeleton h-10 w-64 rounded-lg"></div>
+                <div class="skeleton h-48 w-full rounded-xl"></div>
+                <div class="skeleton h-64 w-full rounded-xl"></div>
+            </div>
+
+            <!-- Nội dung (JS điền vào) -->
+            <div id="invoice-content" class="hidden">
+
+                <!-- Header -->
+                <div class="flex flex-col md:flex-row justify-between items-start gap-4 mb-8">
+                    <div>
+                        <h1 id="inv-number" class="text-4xl font-extrabold tracking-tight text-on-surface font-headline mb-1">—</h1>
+                        <div class="flex flex-wrap gap-6 text-on-surface-variant mt-3">
+                            <div class="flex items-center gap-2">
+                                <span class="material-symbols-outlined text-sm">person</span>
+                                <span id="inv-customer" class="font-medium">—</span>
+                            </div>
+                            <div class="flex items-center gap-2">
+                                <span class="material-symbols-outlined text-sm">calendar_today</span>
+                                <span id="inv-date" class="font-medium">—</span>
+                            </div>
+                        </div>
+                    </div>
+                    <span id="inv-status-badge" class="px-4 py-2 rounded-full text-sm font-bold"></span>
+                </div>
+
+                <!-- Bảng dòng sản phẩm -->
+                <div class="bg-surface-container-lowest rounded-xl overflow-hidden shadow-sm mb-8">
+                    <!-- Header -->
+                    <div class="bg-surface-container-highest px-6 py-3 flex items-center">
+                        <div class="w-[37%] text-xs font-bold uppercase tracking-widest text-on-surface-variant">Mô tả</div>
+                        <div class="w-[9%] text-xs font-bold uppercase tracking-widest text-on-surface-variant text-center">SL</div>
+                        <div class="w-[16%] text-xs font-bold uppercase tracking-widest text-on-surface-variant text-right">Đơn giá</div>
+                        <div class="w-[22%] text-xs font-bold uppercase tracking-widest text-on-surface-variant text-right">Thuế</div>
+                        <div class="w-[16%] text-xs font-bold uppercase tracking-widest text-on-surface-variant text-right">Thành tiền</div>
+                    </div>
+                    <!-- Rows -->
+                    <div id="inv-lines" class="divide-y divide-surface-container-low"></div>
+                    <!-- Footer tổng -->
+                    <div class="px-6 py-6 bg-surface-container-low/30 flex flex-col items-end gap-2">
+                        <div class="flex justify-between w-64 text-on-surface-variant text-sm">
+                            <span>Tạm tính</span>
+                            <span id="inv-subtotal" class="font-medium">—</span>
+                        </div>
+                        <div class="flex justify-between w-64 text-on-surface-variant text-sm">
+                            <span>Thuế</span>
+                            <span id="inv-tax" class="font-medium">—</span>
+                        </div>
+                        <div class="flex justify-between w-64 pt-3 border-t border-surface-container-low">
+                            <span class="text-base font-bold text-on-background">Tổng cộng</span>
+                            <span id="inv-total" class="text-xl font-black text-primary">—</span>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+
+            <!-- Lỗi -->
+            <div id="invoice-error" class="hidden text-center py-20 text-on-surface-variant">
+                <span class="material-symbols-outlined text-5xl mb-4 block">error_outline</span>
+                <p class="text-lg font-medium">Không tìm thấy hóa đơn.</p>
+            </div>
+
+        </main>
+
+        <t t-call="household_invoice_app.mobile_nav"/>
+        <script type="text/javascript">window.INVOICE_ID = <t t-esc="invoice_id"/>;</script>
+        <script type="text/javascript" src="/household_invoice_app/static/src/js/pages/invoice_detail.js"/>
+    </body>
+    </html>
+</template>
+
+</data>
+</odoo>

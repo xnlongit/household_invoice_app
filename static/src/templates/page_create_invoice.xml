@@ -1,0 +1,166 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+<data>
+
+<!-- ================================================================
+     Trang tạo hóa đơn mới
+================================================================ -->
+<template id="page_create_invoice" name="Trang tạo hóa đơn">
+    <html class="light" lang="vi">
+    <head>
+        <meta charset="utf-8"/>
+        <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+        <title>Hóa đơn mới | LedgerCurator</title>
+        <t t-call="household_invoice_app.assets_common"/>
+        <style>
+            #product-dropdown {
+                position: absolute; top: 100%; left: 0; right: 0;
+                background: #fff; border-radius: 0.75rem;
+                box-shadow: 0 12px 32px rgba(44,52,55,0.12);
+                z-index: 50; max-height: 240px; overflow-y: auto;
+            }
+        </style>
+    </head>
+    <body class="bg-background text-on-background min-h-screen flex">
+        <main class="flex-1 min-h-screen flex flex-col">
+            <t t-call="household_invoice_app.topnav"/>
+
+            <div class="flex-1 p-8 max-w-7xl mx-auto w-full">
+                <div class="flex flex-col lg:flex-row gap-8 items-start">
+
+                    <!-- Vùng form -->
+                    <div class="w-full lg:w-2/3 space-y-8">
+                        <div class="space-y-2">
+                            <h2 class="text-4xl font-extrabold tracking-tight text-on-background font-headline">Hóa đơn mới</h2>
+                            <p class="text-on-surface-variant text-lg">Tạo hồ sơ tài chính chuyên nghiệp cho khách hàng.</p>
+                        </div>
+
+                        <!-- Thông tin khách hàng -->
+                        <div class="bg-surface-container-low p-8 rounded-xl space-y-6">
+                            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                                <!-- Tên khách hàng -->
+                                <div class="space-y-2">
+                                    <label class="text-xs font-bold uppercase tracking-widest text-on-surface-variant px-1">
+                                        Tên khách hàng
+                                    </label>
+                                    <div class="relative">
+                                        <span class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-outline">person</span>
+                                        <input class="w-full pl-10 pr-4 py-3 bg-surface-container-lowest border-none ring-1 ring-outline-variant/20 rounded-lg focus:ring-2 focus:ring-primary transition-all outline-none"
+                                               id="customer-name" placeholder="Tên khách (tuỳ chọn)" type="text"
+                                               t-att-value="retail_partner_name"/>
+                                    </div>
+                                </div>
+                                <!-- Ngày lập hóa đơn -->
+                                <div class="space-y-2">
+                                    <label class="text-xs font-bold uppercase tracking-widest text-on-surface-variant px-1">
+                                        Ngày lập hóa đơn
+                                    </label>
+                                    <div class="relative">
+                                        <span class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-outline">calendar_today</span>
+                                        <input class="w-full pl-10 pr-4 py-3 bg-surface-container-lowest border-none ring-1 ring-outline-variant/20 rounded-lg focus:ring-2 focus:ring-primary transition-all outline-none"
+                                               id="invoice-date" type="text" placeholder="dd/mm/yyyy" maxlength="10" autocomplete="off"/>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Thêm sản phẩm vào hóa đơn -->
+                            <div class="pt-6 border-t border-surface-container-high space-y-4">
+                                <label class="text-xs font-bold uppercase tracking-widest text-on-surface-variant px-1">
+                                    Thêm sản phẩm
+                                </label>
+                                <div class="grid grid-cols-1 md:grid-cols-12 gap-4 items-end">
+                                    <!-- Tìm sản phẩm -->
+                                    <div class="md:col-span-5 relative" id="product-search-container">
+                                        <span class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-outline z-10">search</span>
+                                        <input class="w-full pl-10 pr-4 py-3 bg-surface-container-lowest border-none ring-1 ring-outline-variant/20 rounded-lg focus:ring-2 focus:ring-primary transition-all outline-none"
+                                               id="product-search" placeholder="Tìm sản phẩm..." type="text" autocomplete="off"/>
+                                        <div id="product-dropdown" class="hidden"></div>
+                                    </div>
+                                    <!-- Số lượng -->
+                                    <div class="md:col-span-2">
+                                        <input class="w-full px-4 py-3 bg-surface-container-lowest border-none ring-1 ring-outline-variant/20 rounded-lg focus:ring-2 focus:ring-primary transition-all outline-none text-center"
+                                               id="product-qty" min="1" placeholder="SL" type="number" value="1"/>
+                                    </div>
+                                    <!-- Đơn giá -->
+                                    <div class="md:col-span-3">
+                                        <input class="w-full px-4 py-3 bg-surface-container-lowest border-none ring-1 ring-outline-variant/20 rounded-lg focus:ring-2 focus:ring-primary transition-all outline-none"
+                                               id="product-price" placeholder="Đơn giá" type="number" step="0.01"/>
+                                    </div>
+                                    <!-- Nút thêm -->
+                                    <div class="md:col-span-2">
+                                        <button class="w-full bg-surface-container-high text-primary py-3 px-2 rounded-lg font-bold hover:bg-primary hover:text-on-primary transition-all duration-300 flex items-center justify-center gap-1"
+                                                id="btn-add-item">
+                                            <span class="material-symbols-outlined text-sm">add</span>
+                                            <span>Thêm</span>
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Bảng dòng sản phẩm -->
+                        <div class="bg-surface-container-lowest rounded-xl overflow-hidden shadow-sm">
+                            <div class="bg-surface-container-highest px-6 py-3 flex items-center">
+                                <div class="w-[37%] text-xs font-bold uppercase tracking-widest text-on-surface-variant">Mô tả</div>
+                                <div class="w-[9%] text-xs font-bold uppercase tracking-widest text-on-surface-variant text-center">SL</div>
+                                <div class="w-[16%] text-xs font-bold uppercase tracking-widest text-on-surface-variant text-right">Đơn giá</div>
+                                <div class="w-[22%] text-xs font-bold uppercase tracking-widest text-on-surface-variant text-right">Thuế</div>
+                                <div class="w-[12%] text-xs font-bold uppercase tracking-widest text-on-surface-variant text-right">Thành tiền</div>
+                                <div class="w-[4%]"></div>
+                            </div>
+                            <div class="divide-y divide-surface-container-low" id="line-items-body">
+                                <div class="px-6 py-8 text-center text-on-surface-variant text-sm">
+                                    Chưa có sản phẩm. Thêm sản phẩm vào hóa đơn bên trên.
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Sidebar tóm tắt hóa đơn -->
+                    <div class="w-full lg:w-1/3 sticky top-28">
+                        <div class="bg-surface-container-lowest p-8 rounded-xl shadow-sm space-y-8 border border-surface-container-low">
+                            <div class="space-y-4">
+                                <h3 class="text-xl font-bold text-on-background font-headline border-b border-surface-container-low pb-4">
+                                    Tóm tắt hóa đơn
+                                </h3>
+                                <div class="space-y-3">
+                                    <div class="flex justify-between items-center text-on-surface-variant">
+                                        <span class="text-sm">Tạm tính</span>
+                                        <span class="font-medium" id="summary-subtotal">0 ₫</span>
+                                    </div>
+                                    <div class="flex justify-between items-center text-on-surface-variant">
+                                        <span class="text-sm">Thuế</span>
+                                        <span class="font-medium" id="summary-tax">0 ₫</span>
+                                    </div>
+                                    <div class="flex justify-between items-center pt-4 border-t border-surface-container-low">
+                                        <span class="text-lg font-bold text-on-background">Tổng cộng</span>
+                                        <span class="text-2xl font-black text-primary" id="summary-total">0 ₫</span>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="flex flex-col space-y-3">
+                                <button class="w-full bg-gradient-to-r from-primary to-primary-container text-on-primary-container py-4 rounded-lg font-bold shadow-lg shadow-primary/20 active:scale-[0.98] transition-all"
+                                        id="btn-submit">
+                                    Xác nhận &amp; Gửi hóa đơn
+                                </button>
+                                <button class="w-full text-error font-semibold py-2 text-sm hover:underline"
+                                        id="btn-discard">
+                                    Hủy bỏ
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </main>
+
+        <t t-call="household_invoice_app.mobile_nav"/>
+        <script type="text/javascript" src="/household_invoice_app/static/src/js/pages/create_invoice.js"></script>
+    </body>
+    </html>
+</template>
+
+</data>
+</odoo>

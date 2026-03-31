@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data noupdate="1">
+        <record id="partner_retail_customer" model="res.partner">
+            <field name="name">Khách bán lẻ</field>
+            <field name="customer_rank">1</field>
+        </record>
+    </data>
+</odoo>

@@ -1,0 +1,135 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+<data>
+
+<!-- ================================================================
+     Khối tài nguyên chung (CSS, JS, fonts)
+================================================================ -->
+<template id="assets_common" name="Tuyen Hoa - Tài nguyên chung">
+    <link href="https://fonts.googleapis.com" rel="preconnect"/>
+    <link crossorigin="" href="https://fonts.gstatic.com" rel="preconnect"/>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&amp;family=Manrope:wght@700;800&amp;display=swap" rel="stylesheet"/>
+    <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&amp;display=swap" rel="stylesheet"/>
+    <script src="https://cdn.tailwindcss.com?plugins=forms,container-queries"></script>
+    <script type="text/javascript" src="/household_invoice_app/static/src/js/config/tailwind.config.js"></script>
+    <link rel="stylesheet" type="text/css" href="/household_invoice_app/static/src/css/app.css"/>
+    <script type="text/javascript" src="/household_invoice_app/static/src/js/utils/common.js"></script>
+</template>
+
+<!-- ================================================================
+     Thanh điều hướng bên trái (Sidebar)
+================================================================ -->
+<template id="sidebar_nav" name="LedgerCurator - Sidebar">
+    <aside class="hidden md:flex fixed left-0 top-0 h-full w-64 bg-surface-container-low flex-col p-6">
+        <!-- Logo -->
+        <div class="flex items-center gap-3 mb-8 px-2">
+            <div class="w-10 h-10 bg-primary flex items-center justify-center rounded-lg">
+                <span class="material-symbols-outlined text-on-primary-container">account_balance</span>
+            </div>
+            <div>
+                <div class="text-xl font-black text-primary leading-none font-headline">Tuyen Hoa</div>
+                <div class="text-xs text-on-surface-variant uppercase tracking-widest font-bold">Quản lý tài chính</div>
+            </div>
+        </div>
+        <!-- Menu -->
+        <nav class="flex-1 space-y-1">
+            <a href="/app/dashboard" data-sidenav="dashboard"
+               class="flex items-center gap-3 px-4 py-3 text-on-surface-variant hover:bg-white/50 rounded-lg transition-colors">
+                <span class="material-symbols-outlined">dashboard</span>
+                <span class="font-medium">Tổng quan</span>
+            </a>
+            <a href="/app/invoices" data-sidenav="invoices"
+               class="flex items-center gap-3 px-4 py-3 text-on-surface-variant hover:bg-white/50 rounded-lg transition-colors">
+                <span class="material-symbols-outlined">description</span>
+                <span class="font-medium">Hóa đơn</span>
+            </a>
+            <a href="/app/products" data-sidenav="products"
+               class="flex items-center gap-3 px-4 py-3 text-on-surface-variant hover:bg-white/50 rounded-lg transition-colors">
+                <span class="material-symbols-outlined">inventory_2</span>
+                <span class="font-medium">Sản phẩm</span>
+            </a>
+        </nav>
+        <!-- Nút tạo mới -->
+        <a href="/app/invoices/new"
+           class="w-full bg-gradient-to-r from-primary to-primary-container text-on-primary-container py-3 rounded-lg font-bold flex items-center justify-center gap-2 shadow-lg shadow-primary/20 active:scale-95 transition-transform mt-4">
+            <span class="material-symbols-outlined">add</span>
+            Tạo mới
+        </a>
+        <!-- Đăng xuất -->
+        <a href="/app/logout"
+           class="flex items-center gap-2 px-4 py-2 text-on-surface-variant hover:text-error transition-colors text-sm mt-3">
+            <span class="material-symbols-outlined text-sm">logout</span>
+            Đăng xuất
+        </a>
+    </aside>
+</template>
+
+<!-- ================================================================
+     Thanh điều hướng trên cùng (TopNav)
+================================================================ -->
+<template id="topnav" name="LedgerCurator - TopNav">
+    <header class="bg-surface sticky top-0 z-30 shadow-sm">
+        <div class="flex justify-between items-center w-full px-8 py-4 max-w-7xl mx-auto">
+            <div class="flex items-center gap-8">
+                <a href="/app/dashboard" class="text-2xl font-extrabold tracking-tight text-primary font-headline">
+                    Tuyen Hoa
+                </a>
+                <nav class="hidden lg:flex gap-6">
+                    <a href="/app/dashboard" data-nav="dashboard"
+                       class="text-on-surface-variant font-medium hover:text-primary transition-colors pb-1">
+                        Tổng quan
+                    </a>
+                    <a href="/app/invoices" data-nav="invoices"
+                       class="text-on-surface-variant font-medium hover:text-primary transition-colors pb-1">
+                        Hóa đơn
+                    </a>
+                    <a href="/app/products" data-nav="products"
+                       class="text-on-surface-variant font-medium hover:text-primary transition-colors pb-1">
+                        Sản phẩm
+                    </a>
+                </nav>
+            </div>
+            <div class="flex items-center gap-4">
+                <a href="/app/logout" class="p-2 text-on-surface-variant hover:text-error transition-colors" title="Đăng xuất">
+                    <span class="material-symbols-outlined">logout</span>
+                </a>
+                <div class="w-9 h-9 rounded-full bg-primary-container flex items-center justify-center text-on-primary-container font-bold text-sm">
+                    <t t-esc="(user_name or 'U')[:1].upper()"/>
+                </div>
+            </div>
+        </div>
+    </header>
+</template>
+
+<!-- ================================================================
+     Thanh điều hướng dưới cùng (Mobile)
+================================================================ -->
+<template id="mobile_nav" name="LedgerCurator - Mobile Nav">
+    <nav class="md:hidden fixed bottom-0 left-0 w-full bg-surface shadow-[0_-4px_20px_rgba(0,0,0,0.05)] px-6 py-3 flex justify-around items-center z-50">
+        <a href="/app/dashboard" class="flex flex-col items-center gap-1 text-on-surface-variant">
+            <span class="material-symbols-outlined">dashboard</span>
+            <span class="text-xs font-bold">Tổng quan</span>
+        </a>
+        <a href="/app/invoices" class="flex flex-col items-center gap-1 text-on-surface-variant">
+            <span class="material-symbols-outlined">description</span>
+            <span class="text-xs font-bold">Hóa đơn</span>
+        </a>
+        <div class="relative -top-6">
+            <a href="/app/invoices/new"
+               class="w-12 h-12 bg-primary-container rounded-full shadow-lg flex items-center justify-center text-on-primary-container">
+                <span class="material-symbols-outlined">add</span>
+            </a>
+        </div>
+        <a href="/app/products" class="flex flex-col items-center gap-1 text-on-surface-variant">
+            <span class="material-symbols-outlined">inventory_2</span>
+            <span class="text-xs font-bold">Sản phẩm</span>
+        </a>
+        <a href="/app/logout" class="flex flex-col items-center gap-1 text-on-surface-variant">
+            <span class="material-symbols-outlined">logout</span>
+            <span class="text-xs font-bold">Thoát</span>
+        </a>
+    </nav>
+</template>
+
+</data>
+</odoo>

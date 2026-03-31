@@ -1,0 +1,105 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+<data>
+
+<!-- ================================================================
+     Trang danh sách sản phẩm
+================================================================ -->
+<template id="page_products" name="Trang danh sách sản phẩm">
+    <html class="light" lang="vi">
+    <head>
+        <meta charset="utf-8"/>
+        <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+        <title>Sản phẩm | LedgerCurator</title>
+        <t t-call="household_invoice_app.assets_common"/>
+    </head>
+    <body class="product-page bg-surface text-on-surface min-h-screen">
+        <main class="product-page__main min-h-screen">
+
+            <!-- Header tích hợp thanh tìm kiếm -->
+            <header class="product-page__header sticky top-0 z-30 bg-surface/80 backdrop-blur-md shadow-sm">
+                <div class="product-page__header-inner flex justify-between items-center w-full px-8 py-4 max-w-7xl mx-auto">
+                    <div class="product-page__header-left flex items-center gap-8">
+                        <a href="/app/dashboard" class="product-page__brand text-2xl font-extrabold tracking-tight text-primary font-headline">
+                            LedgerCurator
+                        </a>
+                        <!-- Thanh tìm kiếm (desktop) -->
+                        <div class="product-page__search hidden lg:flex items-center bg-surface-container-low rounded-full px-4 py-2 w-80">
+                            <span class="product-page__search-icon material-symbols-outlined text-outline">search</span>
+                            <input class="product-page__search-input bg-transparent border-none focus:ring-0 text-sm w-full placeholder:text-outline-variant outline-none ml-2"
+                                   id="search-input" placeholder="Tìm kiếm sản phẩm..." type="text"/>
+                        </div>
+                    </div>
+                    <div class="product-page__header-actions flex items-center gap-4">
+                        <a href="/app/logout" class="product-page__logout p-2 text-on-surface-variant hover:text-error transition-colors" title="Đăng xuất">
+                            <span class="material-symbols-outlined">logout</span>
+                        </a>
+                        <div class="product-page__avatar w-9 h-9 rounded-full bg-primary-container flex items-center justify-center text-on-primary-container font-bold text-sm">
+                            <t t-esc="(user_name or 'U')[:1].upper()"/>
+                        </div>
+                    </div>
+                </div>
+            </header>
+
+            <section class="product-page__content px-8 py-6 max-w-7xl mx-auto">
+                <!-- Bảng danh sách sản phẩm -->
+                <div class="product-table bg-surface-container-lowest rounded-xl shadow-sm overflow-hidden">
+                    <!-- Tiêu đề bảng + tìm kiếm mobile -->
+                    <div class="product-table__toolbar p-6 flex flex-col sm:flex-row justify-between items-center gap-4">
+                        <div class="product-table__title-group flex items-center gap-2">
+                            <span class="product-table__title text-lg font-bold font-headline">Danh sách sản phẩm</span>
+                            <span class="product-table__count text-xs bg-surface-container text-on-surface-variant px-2 py-1 rounded-full font-bold"
+                                  id="product-count">—</span>
+                        </div>
+                        <!-- Tìm kiếm (mobile) -->
+                        <div class="product-table__search-mobile flex lg:hidden items-center bg-surface-container-low rounded-full px-4 py-2 w-full">
+                            <span class="product-table__search-mobile-icon material-symbols-outlined text-outline text-sm">search</span>
+                            <input class="product-table__search-mobile-input bg-transparent border-none focus:ring-0 text-sm w-full placeholder:text-outline-variant outline-none ml-2"
+                                   id="search-input-mobile" placeholder="Tìm sản phẩm..." type="text"/>
+                        </div>
+                    </div>
+
+                    <!-- Bảng -->
+                    <div class="product-table__scroll overflow-x-auto">
+                        <table class="product-table__el w-full table-fixed text-left border-collapse">
+                            <colgroup>
+                                <col class="product-table__col--category" style="width:18%"/>
+                                <col class="product-table__col--name" style="width:47%"/>
+                                <col class="product-table__col--price" style="width:20%"/>
+                                <col class="product-table__col--uom" style="width:15%"/>
+                            </colgroup>
+                            <thead class="product-table__head">
+                                <tr class="product-table__head-row bg-surface-container-high/50">
+                                    <th class="product-table__heading--category px-6 py-4 text-xs font-black text-on-surface-variant uppercase tracking-wider">Nhóm sản phẩm</th>
+                                    <th class="product-table__heading--name px-6 py-4 text-xs font-black text-on-surface-variant uppercase tracking-wider">Tên sản phẩm</th>
+                                    <th class="product-table__heading--price px-6 py-4 text-xs font-black text-on-surface-variant uppercase tracking-wider text-right">Giá bán</th>
+                                    <th class="product-table__heading--uom px-6 py-4 text-xs font-black text-on-surface-variant uppercase tracking-wider">Đơn vị tính</th>
+                                </tr>
+                            </thead>
+                            <tbody class="product-table__body divide-y divide-surface-container-low" id="product-list-body">
+                                <tr class="product-table__row--loading">
+                                    <td colspan="4" class="product-table__cell--loading px-6 py-16 text-center text-on-surface-variant">
+                                        Đang tải dữ liệu...
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+
+                    <!-- Phân trang -->
+                    <div class="product-table__footer p-6 flex flex-col sm:flex-row justify-between items-center gap-4 bg-surface-container-low/20">
+                        <span class="product-table__footer-info text-xs text-on-surface-variant font-medium" id="product-count-footer"></span>
+                        <div class="product-table__pagination flex items-center gap-1" id="pagination"></div>
+                    </div>
+                </div>
+            </section>
+        </main>
+
+        <t t-call="household_invoice_app.mobile_nav"/>
+        <script type="text/javascript" src="/household_invoice_app/static/src/js/pages/products.js"></script>
+    </body>
+    </html>
+</template>
+
+</data>
+</odoo>

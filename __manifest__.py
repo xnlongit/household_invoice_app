@@ -1,0 +1,21 @@
+{
+    'name': 'Household Invoice App',
+    'version': '18.0.1.0.0',
+    'category': 'Custom',
+    'summary': 'Ứng dụng quản lý hóa đơn với giao diện riêng',
+    'author': 'Custom',
+    'depends': ['base', 'account', 'product', 'uom'],
+    'data': [
+        'data/res_partner_data.xml',
+        'static/src/templates/common.xml',
+        'static/src/templates/page_login.xml',
+        'static/src/templates/page_dashboard.xml',
+        'static/src/templates/page_invoices.xml',
+        'static/src/templates/page_products.xml',
+        'static/src/templates/page_create_invoice.xml',
+        'static/src/templates/page_invoice_detail.xml',
+    ],
+    'installable': True,
+    'application': True,
+    'license': 'LGPL-3',
+}

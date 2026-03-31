@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+<data>
+
+<!-- ================================================================
+     Trang danh sách hóa đơn
+================================================================ -->
+<template id="page_invoices" name="Trang danh sách hóa đơn">
+    <html class="light" lang="vi">
+    <head>
+        <meta charset="utf-8"/>
+        <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+        <title>Hóa đơn | LedgerCurator</title>
+        <t t-call="household_invoice_app.assets_common"/>
+    </head>
+    <body class="bg-background text-on-background min-h-screen">
+        <main class="min-h-screen">
+            <t t-call="household_invoice_app.topnav"/>
+
+            <div class="max-w-7xl mx-auto px-8 py-10">
+                <!-- Tiêu đề trang -->
+                <div class="flex flex-col md:flex-row justify-between items-end mb-12 gap-6">
+                    <div class="max-w-xl">
+                        <h2 class="text-5xl font-extrabold text-on-surface tracking-tight mb-4 font-headline">Hóa đơn</h2>
+                        <p class="text-on-surface-variant text-lg leading-relaxed">
+                            Quản lý hóa đơn, theo dõi thanh toán và giám sát dòng tiền.
+                        </p>
+                    </div>
+                    <a href="/app/invoices/new"
+                       class="flex items-center gap-2 px-6 py-3 rounded-lg editorial-gradient text-on-primary-container font-bold shadow-md hover:shadow-lg transition-shadow whitespace-nowrap">
+                        <span class="material-symbols-outlined">add</span>
+                        Hóa đơn mới
+                    </a>
+                </div>
+
+                <!-- Bộ lọc trạng thái -->
+                <div class="bg-surface-container-low rounded-xl p-2 mb-8 flex flex-wrap items-center gap-2">
+                    <button class="px-5 py-2.5 bg-surface-container-lowest text-primary font-bold rounded-lg shadow-sm"
+                            data-filter="all">Tất cả</button>
+                    <button class="px-5 py-2.5 text-on-surface-variant font-medium hover:bg-surface-container-high rounded-lg transition-colors"
+                            data-filter="pending">Chờ thanh toán</button>
+                    <button class="px-5 py-2.5 text-on-surface-variant font-medium hover:bg-surface-container-high rounded-lg transition-colors"
+                            data-filter="overdue">Quá hạn</button>
+                    <button class="px-5 py-2.5 text-on-surface-variant font-medium hover:bg-surface-container-high rounded-lg transition-colors"
+                            data-filter="paid">Đã thanh toán</button>
+                    <button class="px-5 py-2.5 text-on-surface-variant font-medium hover:bg-surface-container-high rounded-lg transition-colors"
+                            data-filter="draft">Nháp</button>
+                </div>
+
+                <!-- Bảng danh sách hóa đơn -->
+                <div class="bg-surface-container-lowest rounded-xl overflow-hidden shadow-sm">
+                    <!-- Tiêu đề bảng -->
+                    <div class="grid grid-cols-12 gap-4 px-8 py-4 bg-surface-container-highest/30 items-center">
+                        <div class="col-span-2 text-xs font-bold text-on-surface-variant uppercase tracking-widest">Số HĐ</div>
+                        <div class="col-span-4 text-xs font-bold text-on-surface-variant uppercase tracking-widest">Khách hàng</div>
+                        <div class="col-span-2 text-xs font-bold text-on-surface-variant uppercase tracking-widest">Ngày</div>
+                        <div class="col-span-2 text-xs font-bold text-on-surface-variant uppercase tracking-widest">Tổng tiền</div>
+                        <div class="col-span-2 text-xs font-bold text-on-surface-variant uppercase tracking-widest text-right">Trạng thái</div>
+                    </div>
+
+                    <!-- Nội dung bảng (JS điền vào) -->
+                    <div id="invoice-list-body">
+                        <div class="px-8 py-16 text-center text-on-surface-variant">Đang tải dữ liệu...</div>
+                    </div>
+
+                    <!-- Phân trang -->
+                    <div class="px-8 py-6 bg-surface-container-low flex justify-between items-center">
+                        <span class="text-sm text-on-surface-variant font-medium" id="invoice-count"></span>
+                        <div class="flex gap-2" id="pagination"></div>
+                    </div>
+                </div>
+            </div>
+        </main>
+
+        <t t-call="household_invoice_app.mobile_nav"/>
+        <script type="text/javascript" src="/household_invoice_app/static/src/js/pages/invoices.js"></script>
+    </body>
+    </html>
+</template>
+
+</data>
+</odoo>

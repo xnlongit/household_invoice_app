@@ -1,0 +1,99 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+<data>
+
+<!-- ================================================================
+     Trang đăng nhập
+================================================================ -->
+<template id="page_login" name="Trang đăng nhập">
+    <html class="light" lang="vi">
+    <head>
+        <meta charset="utf-8"/>
+        <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
+        <title>Đăng nhập | Điện nước Tuyển Hoa</title>
+        <t t-call="household_invoice_app.assets_common"/>
+    </head>
+    <body class="bg-surface font-body text-on-surface antialiased">
+        <main class="min-h-screen flex items-center justify-center p-6 relative overflow-hidden">
+            <!-- Nền trang trí -->
+            <div class="absolute -top-24 -right-24 w-96 h-96 bg-secondary-container opacity-20 rounded-full blur-3xl"></div>
+            <div class="absolute -bottom-24 -left-24 w-96 h-96 bg-tertiary-container opacity-20 rounded-full blur-3xl"></div>
+
+            <div class="w-full max-w-md z-10">
+                <!-- Logo và thương hiệu -->
+                <div class="text-center mb-10">
+                    <div class="inline-flex items-center justify-center w-12 h-12 bg-primary-container rounded-lg mb-4 shadow-lg shadow-primary/20">
+                        <span class="material-symbols-outlined text-on-primary-container"
+                              style="font-variation-settings:'FILL' 1">account_balance_wallet</span>
+                    </div>
+                    <h1 class="font-headline text-3xl font-extrabold tracking-tight text-primary">Điện nước Tuyển Hoa</h1>
+                    <p class="text-on-surface-variant font-label mt-2">Quản lý tài chính hộ kinh doanh hiệu quả.</p>
+                </div>
+
+                <!-- Thẻ đăng nhập -->
+                <div class="bg-surface-container-lowest rounded-xl p-8 shadow-[0_12px_32px_rgba(44,52,55,0.06)]">
+                    <div class="mb-8">
+                        <h2 class="font-headline text-2xl font-bold mb-1">Chào mừng trở lại</h2>
+                        <p class="text-on-surface-variant text-sm">Nhập thông tin tài khoản của bạn.</p>
+                    </div>
+
+                    <!-- Hộp thông báo lỗi -->
+                    <div id="login-error"
+                         class="hidden mb-4 p-3 bg-red-50 text-error rounded-lg text-sm font-semibold border border-error/20">
+                    </div>
+
+                    <form id="login-form" class="space-y-6">
+                        <!-- Email / Tên đăng nhập -->
+                        <div class="space-y-2">
+                            <label class="block text-sm font-semibold text-on-surface ml-1" for="email">
+                                Email / Tên đăng nhập
+                            </label>
+                            <div class="relative">
+                                <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none text-outline">
+                                    <span class="material-symbols-outlined text-sm">mail</span>
+                                </div>
+                                <input class="block w-full pl-10 pr-4 py-3 bg-surface-container-lowest border border-outline-variant/20 rounded-lg text-on-surface focus:ring-4 focus:ring-primary/10 focus:border-primary transition-all duration-200 outline-none"
+                                       id="email" name="email" placeholder="admin@congty.com" type="text"/>
+                            </div>
+                        </div>
+
+                        <!-- Mật khẩu -->
+                        <div class="space-y-2">
+                            <label class="block text-sm font-semibold text-on-surface ml-1" for="password">
+                                Mật khẩu
+                            </label>
+                            <div class="relative">
+                                <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none text-outline">
+                                    <span class="material-symbols-outlined text-sm">lock</span>
+                                </div>
+                                <input class="block w-full pl-10 pr-4 py-3 bg-surface-container-lowest border border-outline-variant/20 rounded-lg text-on-surface focus:ring-4 focus:ring-primary/10 focus:border-primary transition-all duration-200 outline-none"
+                                       id="password" name="password" placeholder="••••••••" type="password"/>
+                            </div>
+                        </div>
+
+                        <!-- Nút đăng nhập -->
+                        <button class="editorial-gradient w-full py-3.5 px-4 rounded-lg text-on-primary-container font-semibold shadow-md shadow-primary/20 hover:shadow-lg hover:shadow-primary/30 active:scale-[0.98] transition-all duration-200 flex items-center justify-center gap-2"
+                                type="submit">
+                            <span id="btn-text">Đăng nhập</span>
+                            <span class="material-symbols-outlined text-sm" id="btn-icon">arrow_forward</span>
+                        </button>
+                    </form>
+
+                    <div class="mt-8 pt-6 border-t border-surface-container text-center text-xs text-outline">
+                        534 Đại lộ Võ Nguyên Giáp, Quảng Phú, Thanh Hóa
+                    </div>
+                </div>
+
+                <!-- Footer -->
+                <div class="mt-8 text-center">
+                    <p class="text-xs text-outline-variant uppercase tracking-widest">Điện nước Tuyển Hoa &#169; 2026</p>
+                </div>
+            </div>
+        </main>
+        <script type="text/javascript" src="/household_invoice_app/static/src/js/pages/login.js"></script>
+    </body>
+    </html>
+</template>
+
+</data>
+</odoo>
