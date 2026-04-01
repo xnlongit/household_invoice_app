@@ -377,6 +377,24 @@ class HouseholdInvoiceApp(http.Controller):
     # API: Products
     # ------------------------------------------------------------------
 
+    @http.route('/app/api/taxes', type='http', auth='public', methods=['GET'], website=False)
+    def api_taxes(self, search='', **kw):
+        err = _require_session()
+        if err:
+            return err
+
+        domain = [('type_tax_use', 'in', ['sale', 'all']), ('active', '=', True)]
+        if search:
+            domain.append(('name', 'ilike', search))
+
+        taxes = request.env['account.tax'].sudo().search(domain, limit=50, order='name asc')
+
+        return _json_resp({
+            'data': [{'id': t.id, 'name': t.name, 'amount': t.amount} for t in taxes],
+        })
+
+    # ------------------------------------------------------------------
+
     @http.route('/app/api/products', type='http', auth='public', methods=['GET'], website=False)
     def api_products(self, page=1, limit=20, search='', **kw):
         err = _require_session()

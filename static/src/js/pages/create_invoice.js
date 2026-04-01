@@ -3,7 +3,63 @@ document.addEventListener('DOMContentLoaded', function () {
 
     let lineItems = [];
     let allProducts = [];
+    let availableTaxes = [];
+    let selectedTax = null;  // single select
     let searchTimer = null;
+
+    // ---- Tax selector ----
+    async function loadTaxes(search) {
+        const params = new URLSearchParams({ search: search || '' });
+        const data = await LC.api('/app/api/taxes?' + params);
+        if (data && data.data) {
+            availableTaxes = data.data;
+            renderTaxDropdown();
+        }
+    }
+
+    function renderTaxDropdown() {
+        const dropdown = document.getElementById('tax-dropdown');
+        if (!dropdown) return;
+        if (availableTaxes.length === 0) {
+            dropdown.innerHTML = '<div class="px-4 py-3 text-sm text-on-surface-variant">Không tìm thấy thuế nào</div>';
+            return;
+        }
+        dropdown.innerHTML = availableTaxes.map(function (tax) {
+            const isSelected = selectedTax && selectedTax.id === tax.id;
+            return '<div class="px-4 py-3 hover:bg-surface-container-low cursor-pointer tax-option ' + (isSelected ? 'font-semibold text-primary' : 'text-on-surface') + '" data-tax-id="' + tax.id + '">'
+                + escapeAttr(tax.name)
+                + '</div>';
+        }).join('');
+    }
+
+    const taxSearch = document.getElementById('tax-search');
+    taxSearch.addEventListener('focus', function () {
+        loadTaxes('');
+        document.getElementById('tax-dropdown').classList.remove('hidden');
+    });
+    taxSearch.addEventListener('input', function () {
+        selectedTax = null;
+        loadTaxes(this.value);
+        document.getElementById('tax-dropdown').classList.remove('hidden');
+    });
+    document.getElementById('tax-dropdown').addEventListener('click', function (e) {
+        const option = e.target.closest('.tax-option');
+        if (!option) return;
+        e.stopPropagation();
+        const id = parseInt(option.dataset.taxId);
+        const tax = availableTaxes.find(function (t) { return t.id === id; });
+        if (!tax) return;
+        selectedTax = tax;
+        taxSearch.value = tax.name;
+        document.getElementById('tax-dropdown').classList.add('hidden');
+    });
+    document.addEventListener('click', function (e) {
+        if (!e.target.closest('#tax-selector-container')) {
+            document.getElementById('tax-dropdown').classList.add('hidden');
+            // Nếu user xóa text thì clear selection
+            if (taxSearch.value === '') selectedTax = null;
+        }
+    });
 
     // Tải sản phẩm cho autocomplete
     async function loadProducts(search) {
@@ -39,8 +95,12 @@ document.addEventListener('DOMContentLoaded', function () {
                     document.getElementById('product-search').value = this.dataset.name;
                     document.getElementById('product-search').dataset.selectedId = this.dataset.id;
                     document.getElementById('product-search').dataset.selectedPrice = this.dataset.price;
-                    document.getElementById('product-search').dataset.selectedTaxes = this.dataset.taxes;
                     document.getElementById('product-price').value = this.dataset.price;
+                    try {
+                        const taxes = JSON.parse(decodeURIComponent(this.dataset.taxes || '[]'));
+                        selectedTax = taxes.length ? taxes[0] : null;
+                    } catch (e) { selectedTax = null; }
+                    taxSearch.value = selectedTax ? selectedTax.name : '';
                     dropdown.classList.add('hidden');
                 });
             });
@@ -76,19 +136,25 @@ document.addEventListener('DOMContentLoaded', function () {
 
         if (!name) { LC.toast('Vui lòng nhập tên sản phẩm', 'error'); return; }
 
-        let taxes = [];
-        try { taxes = JSON.parse(decodeURIComponent(productSearch ? (productSearch.dataset.selectedTaxes || '[]') : '[]')); } catch (e) {}
-
-        lineItems.push({ product_id: pid || null, description: name, quantity: qty, price_unit: price, taxes: taxes });
+        lineItems.push({ product_id: pid || null, description: name, quantity: qty, price_unit: price, taxes: selectedTax ? [selectedTax] : [] });
 
         // Reset ô nhập
-        if (productSearch) { productSearch.value = ''; productSearch.dataset.selectedId = ''; productSearch.dataset.selectedPrice = ''; productSearch.dataset.selectedTaxes = ''; }
+        if (productSearch) { productSearch.value = ''; productSearch.dataset.selectedId = ''; productSearch.dataset.selectedPrice = ''; }
         document.getElementById('product-qty').value = '1';
         document.getElementById('product-price').value = '';
+        selectedTax = null;
+        taxSearch.value = '';
 
         renderLineItems();
         updateSummary();
     });
+
+    function escapeAttr(s) {
+        return String(s).replace(/&/g, '&amp;').replace(/"/g, '&quot;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+    }
+
+    const cellInput = 'width:100%;background:transparent;border:none;outline:none;border-radius:4px;padding:2px 4px;';
+    const cellInputFocusCls = 'focus:bg-surface-container-low';
 
     function renderLineItems() {
         const container = document.getElementById('line-items-body');
@@ -100,21 +166,48 @@ document.addEventListener('DOMContentLoaded', function () {
             const taxLabel = item.taxes && item.taxes.length
                 ? item.taxes.map(function(t) { return t.name; }).join(', ')
                 : '—';
-            return `<div class="px-6 py-5 flex items-center hover:bg-surface-container-low/30 transition-colors">
-                <div class="w-[37%]">
-                    <p class="font-semibold text-on-surface">${item.description}</p>
+            return `<div class="px-6 py-3 flex items-center hover:bg-surface-container-low/30 transition-colors">
+                <div style="width:37%;flex-shrink:0;min-width:0;padding-right:8px">
+                    <input type="text" value="${escapeAttr(item.description)}"
+                        style="${cellInput}" class="font-semibold text-on-surface ${cellInputFocusCls}"
+                        data-field="description" data-idx="${idx}" placeholder="Mô tả"/>
                 </div>
-                <div class="w-[9%] text-center font-medium">${item.quantity}</div>
-                <div class="w-[16%] text-right font-medium">${LC.fmt.currency(item.price_unit)}</div>
-                <div class="w-[22%] text-right text-sm text-on-surface-variant">${taxLabel}</div>
-                <div class="w-[12%] text-right font-bold text-primary">${LC.fmt.currency(item.quantity * item.price_unit)}</div>
-                <div class="w-[4%] flex justify-end">
+                <div style="width:9%;flex-shrink:0">
+                    <input type="number" min="1" value="${item.quantity}"
+                        style="${cellInput}text-align:center;" class="font-medium ${cellInputFocusCls}"
+                        data-field="quantity" data-idx="${idx}"/>
+                </div>
+                <div style="width:16%;flex-shrink:0">
+                    <input type="number" min="0" value="${item.price_unit}"
+                        style="${cellInput}text-align:right;" class="font-medium ${cellInputFocusCls}"
+                        data-field="price_unit" data-idx="${idx}"/>
+                </div>
+                <div style="width:22%;flex-shrink:0;text-align:right" class="text-sm text-on-surface-variant px-2">${taxLabel}</div>
+                <div style="width:12%;flex-shrink:0;text-align:right" class="font-bold text-primary" data-total-idx="${idx}">${LC.fmt.currency(item.quantity * item.price_unit)}</div>
+                <div style="width:4%;flex-shrink:0;display:flex;justify-content:flex-end">
                     <button class="text-error hover:text-error-dim transition-colors" data-remove="${idx}">
                         <span class="material-symbols-outlined text-sm">delete</span>
                     </button>
                 </div>
             </div>`;
         }).join('');
+
+        container.querySelectorAll('input[data-field]').forEach(function (input) {
+            input.addEventListener('input', function () {
+                const idx = parseInt(this.dataset.idx);
+                const field = this.dataset.field;
+                if (field === 'quantity') {
+                    lineItems[idx].quantity = parseFloat(this.value) || 1;
+                } else if (field === 'price_unit') {
+                    lineItems[idx].price_unit = parseFloat(this.value) || 0;
+                } else {
+                    lineItems[idx].description = this.value;
+                }
+                const totalCell = container.querySelector(`[data-total-idx="${idx}"]`);
+                if (totalCell) totalCell.textContent = LC.fmt.currency(lineItems[idx].quantity * lineItems[idx].price_unit);
+                updateSummary();
+            });
+        });
 
         container.querySelectorAll('[data-remove]').forEach(function (btn) {
             btn.addEventListener('click', function () {
@@ -143,13 +236,8 @@ document.addEventListener('DOMContentLoaded', function () {
         if (lineItems.length === 0) { LC.toast('Vui lòng thêm ít nhất một sản phẩm', 'error'); return; }
 
         const customerName = document.getElementById('customer-name').value.trim();
-        const rawDate = document.getElementById('invoice-date').value.trim();
-        // Chuyển dd/mm/yyyy → yyyy-mm-dd cho API
-        let invoiceDate = '';
-        if (/^\d{2}\/\d{2}\/\d{4}$/.test(rawDate)) {
-            const [d, mo, y] = rawDate.split('/');
-            invoiceDate = y + '-' + mo + '-' + d;
-        }
+        // type="date" trả về yyyy-mm-dd trực tiếp
+        const invoiceDate = document.getElementById('invoice-date').value.trim();
 
         this.disabled = true;
         this.textContent = 'Đang tạo...';
@@ -184,22 +272,13 @@ document.addEventListener('DOMContentLoaded', function () {
         if (confirm('Hủy bỏ hóa đơn này?')) window.location.href = '/app/invoices';
     });
 
-    // Ngày lập hóa đơn — định dạng dd/mm/yyyy
+    // Ngày lập hóa đơn — mặc định hôm nay
     const dateInput = document.getElementById('invoice-date');
     if (dateInput) {
-        // Giá trị mặc định: hôm nay
         const today = new Date();
         const dd = String(today.getDate()).padStart(2, '0');
         const mm = String(today.getMonth() + 1).padStart(2, '0');
-        dateInput.value = dd + '/' + mm + '/' + today.getFullYear();
-
-        // Auto-format: tự chèn dấu / khi nhập
-        dateInput.addEventListener('input', function () {
-            let v = this.value.replace(/\D/g, '').slice(0, 8);
-            if (v.length >= 3) v = v.slice(0, 2) + '/' + v.slice(2);
-            if (v.length >= 6) v = v.slice(0, 5) + '/' + v.slice(5);
-            this.value = v;
-        });
+        dateInput.value = today.getFullYear() + '-' + mm + '-' + dd;
     }
     renderLineItems();
     updateSummary();
