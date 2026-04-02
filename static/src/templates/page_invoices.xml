@@ -33,19 +33,6 @@
                     </a>
                 </div>
 
-                <!-- Bộ lọc trạng thái -->
-                <div class="bg-surface-container-low rounded-xl p-2 mb-8 flex flex-wrap items-center gap-2">
-                    <button class="px-5 py-2.5 bg-surface-container-lowest text-primary font-bold rounded-lg shadow-sm"
-                            data-filter="all">Tất cả</button>
-                    <button class="px-5 py-2.5 text-on-surface-variant font-medium hover:bg-surface-container-high rounded-lg transition-colors"
-                            data-filter="pending">Chờ thanh toán</button>
-                    <button class="px-5 py-2.5 text-on-surface-variant font-medium hover:bg-surface-container-high rounded-lg transition-colors"
-                            data-filter="overdue">Quá hạn</button>
-                    <button class="px-5 py-2.5 text-on-surface-variant font-medium hover:bg-surface-container-high rounded-lg transition-colors"
-                            data-filter="paid">Đã thanh toán</button>
-                    <button class="px-5 py-2.5 text-on-surface-variant font-medium hover:bg-surface-container-high rounded-lg transition-colors"
-                            data-filter="draft">Nháp</button>
-                </div>
 
                 <!-- Bảng danh sách hóa đơn -->
                 <div class="bg-surface-container-lowest rounded-xl overflow-hidden shadow-sm">
@@ -55,7 +42,7 @@
                         <div class="col-span-4 text-xs font-bold text-on-surface-variant uppercase tracking-widest">Khách hàng</div>
                         <div class="col-span-2 text-xs font-bold text-on-surface-variant uppercase tracking-widest">Ngày</div>
                         <div class="col-span-2 text-xs font-bold text-on-surface-variant uppercase tracking-widest">Tổng tiền</div>
-                        <div class="col-span-2 text-xs font-bold text-on-surface-variant uppercase tracking-widest text-right">Trạng thái</div>
+                        <div class="col-span-2 text-xs font-bold text-on-surface-variant uppercase tracking-widest text-right">Trạng thái / Xóa</div>
                     </div>
 
                     <!-- Nội dung bảng (JS điền vào) -->

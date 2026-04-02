@@ -50,7 +50,14 @@
                             </div>
                         </div>
                     </div>
-                    <span id="inv-status-badge" class="px-4 py-2 rounded-full text-sm font-bold"></span>
+                    <div class="flex items-center gap-3">
+                        <span id="inv-status-badge" class="px-4 py-2 rounded-full text-sm font-bold"></span>
+                        <button id="btn-delete-invoice"
+                                class="hidden items-center gap-1.5 px-4 py-2 rounded-lg bg-red-50 text-red-600 hover:bg-red-100 font-medium text-sm transition-colors">
+                            <span class="material-symbols-outlined text-sm">delete</span>
+                            Xóa đơn
+                        </button>
+                    </div>
                 </div>
 
                 <!-- Bảng dòng sản phẩm -->

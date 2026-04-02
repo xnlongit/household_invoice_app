@@ -6,6 +6,7 @@
     'author': 'Custom',
     'depends': ['base', 'account', 'product', 'uom'],
     'data': [
+        'data/sequence_data.xml',
         'data/res_partner_data.xml',
         'static/src/templates/common.xml',
         'static/src/templates/page_login.xml',

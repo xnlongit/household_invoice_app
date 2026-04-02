@@ -1,7 +1,6 @@
 document.addEventListener('DOMContentLoaded', function () {
     LC.setActiveNav('invoices');
 
-    let currentStatus = 'all';
     let currentPage = 1;
     const limit = 20;
 
@@ -16,7 +15,7 @@ document.addEventListener('DOMContentLoaded', function () {
             <div class="skeleton h-6 w-1/3 mx-auto"></div>
         </div>`;
 
-        const params = new URLSearchParams({ status: currentStatus, page: currentPage, limit });
+        const params = new URLSearchParams({ status: 'all', page: currentPage, limit });
         const data = await LC.api('/app/api/invoices?' + params);
         if (!data) return;
 
@@ -27,8 +26,15 @@ document.addEventListener('DOMContentLoaded', function () {
         } else {
             tbody.innerHTML = data.data.map(function (inv) {
                 const initials = LC.fmt.initials(inv.partner_name);
+                const deleteBtn = inv.status === 'draft'
+                    ? `<button class="btn-delete-row ml-2 p-1.5 rounded-lg text-red-400 hover:bg-red-50 hover:text-red-600 transition-colors"
+                               data-id="${inv.id}" title="Xóa hóa đơn nháp">
+                           <span class="material-symbols-outlined text-base leading-none">delete</span>
+                       </button>`
+                    : '';
                 return `
-                <div class="grid grid-cols-12 gap-4 px-8 py-6 items-center hover:bg-surface-container-low cursor-pointer transition-colors group">
+                <div class="grid grid-cols-12 gap-4 px-8 py-6 items-center hover:bg-surface-container-low cursor-pointer transition-colors group invoice-row"
+                     data-id="${inv.id}">
                     <div class="col-span-2 font-bold text-on-surface group-hover:text-primary transition-colors">${inv.name}</div>
                     <div class="col-span-4 flex items-center gap-3">
                         <div class="w-10 h-10 rounded-full bg-secondary-container flex items-center justify-center text-on-secondary-container font-bold text-sm">${initials}</div>
@@ -41,9 +47,31 @@ document.addEventListener('DOMContentLoaded', function () {
                     <div class="col-span-2 font-black text-on-surface text-lg">
                         ${LC.fmt.currency(inv.amount_total, inv.currency_symbol)}
                     </div>
-                    <div class="col-span-2 flex justify-end">${LC.statusBadge(inv.status)}</div>
+                    <div class="col-span-2 flex justify-end items-center">${LC.statusBadge(inv.status)}${deleteBtn}</div>
                 </div>`;
             }).join('');
+
+            // Click vào row → đến chi tiết
+            tbody.querySelectorAll('.invoice-row').forEach(function (row) {
+                row.addEventListener('click', function (e) {
+                    if (e.target.closest('.btn-delete-row')) return;
+                    window.location.href = '/app/invoices/' + this.dataset.id;
+                });
+            });
+
+            // Nút xóa
+            tbody.querySelectorAll('.btn-delete-row').forEach(function (btn) {
+                btn.addEventListener('click', async function (e) {
+                    e.stopPropagation();
+                    if (!confirm('Xóa hóa đơn này? Hành động không thể hoàn tác.')) return;
+                    const res = await LC.api('/app/api/invoices/' + this.dataset.id + '/delete', { method: 'POST' });
+                    if (res && res.success) {
+                        loadInvoices();
+                    } else {
+                        alert((res && res.error) || 'Không thể xóa hóa đơn');
+                    }
+                });
+            });
         }
 
         renderPagination(data.page, data.total_pages, paginationEl);
@@ -71,21 +99,6 @@ document.addEventListener('DOMContentLoaded', function () {
             });
         });
     }
-
-    // Bộ lọc trạng thái
-    document.querySelectorAll('[data-filter]').forEach(function (btn) {
-        btn.addEventListener('click', function () {
-            document.querySelectorAll('[data-filter]').forEach(b => {
-                b.classList.remove('bg-surface-container-lowest', 'text-primary', 'font-bold', 'shadow-sm');
-                b.classList.add('text-on-surface-variant', 'font-medium');
-            });
-            this.classList.add('bg-surface-container-lowest', 'text-primary', 'font-bold', 'shadow-sm');
-            this.classList.remove('text-on-surface-variant', 'font-medium');
-            currentStatus = this.dataset.filter;
-            currentPage = 1;
-            loadInvoices();
-        });
-    });
 
     loadInvoices();
 });

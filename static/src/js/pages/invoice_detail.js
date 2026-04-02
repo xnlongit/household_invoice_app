@@ -54,6 +54,22 @@ document.addEventListener('DOMContentLoaded', async function () {
 
     // Cập nhật title
     document.title = data.name + ' | Hóa đơn';
+
+    // Nút xóa — chỉ hiện khi nháp
+    if (data.status === 'draft') {
+        const btnDelete = document.getElementById('btn-delete-invoice');
+        btnDelete.classList.remove('hidden');
+        btnDelete.classList.add('flex');
+        btnDelete.addEventListener('click', async function () {
+            if (!confirm('Xóa hóa đơn ' + data.name + '? Hành động không thể hoàn tác.')) return;
+            const res = await LC.api('/app/api/invoices/' + invoiceId + '/delete', { method: 'POST' });
+            if (res && res.success) {
+                window.location.href = '/app/invoices';
+            } else {
+                alert((res && res.error) || 'Không thể xóa hóa đơn');
+            }
+        });
+    }
 });
 
 function showError() {

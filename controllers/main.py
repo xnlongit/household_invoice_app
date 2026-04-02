@@ -267,7 +267,7 @@ class HouseholdInvoiceApp(http.Controller):
         Move = request.env['account.move'].sudo()
         total = Move.search_count(domain)
         invoices = Move.search(domain, limit=limit, offset=offset,
-                               order='invoice_date desc, id desc')
+                               order='create_date desc, id desc')
 
         data = [{
             'id': inv.id,
@@ -372,6 +372,20 @@ class HouseholdInvoiceApp(http.Controller):
         except Exception:
             _logger.exception('Create invoice error')
             return _json_resp({'error': 'Không thể tạo hóa đơn'}, status=500)
+
+    @http.route('/app/api/invoices/<int:invoice_id>/delete', type='http', auth='public',
+                methods=['POST'], csrf=False, website=False)
+    def api_invoice_delete(self, invoice_id, **_kw):
+        err = _require_session()
+        if err:
+            return err
+        inv = request.env['account.move'].sudo().browse(invoice_id)
+        if not inv.exists() or inv.move_type != 'out_invoice':
+            return _json_resp({'error': 'Không tìm thấy hóa đơn'}, status=404)
+        if inv.state != 'draft':
+            return _json_resp({'error': 'Chỉ xóa được hóa đơn ở trạng thái nháp'}, status=400)
+        inv.unlink()
+        return _json_resp({'success': True})
 
     # ------------------------------------------------------------------
     # API: Products
