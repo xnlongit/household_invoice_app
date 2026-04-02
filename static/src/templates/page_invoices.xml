@@ -39,10 +39,11 @@
                     <!-- Tiêu đề bảng -->
                     <div class="grid grid-cols-12 gap-4 px-8 py-4 bg-surface-container-highest/30 items-center">
                         <div class="col-span-2 text-xs font-bold text-on-surface-variant uppercase tracking-widest">Số HĐ</div>
-                        <div class="col-span-4 text-xs font-bold text-on-surface-variant uppercase tracking-widest">Khách hàng</div>
+                        <div class="col-span-3 text-xs font-bold text-on-surface-variant uppercase tracking-widest">Khách hàng</div>
                         <div class="col-span-2 text-xs font-bold text-on-surface-variant uppercase tracking-widest">Ngày</div>
                         <div class="col-span-2 text-xs font-bold text-on-surface-variant uppercase tracking-widest">Tổng tiền</div>
-                        <div class="col-span-2 text-xs font-bold text-on-surface-variant uppercase tracking-widest text-right">Trạng thái / Xóa</div>
+                        <div class="col-span-2 text-xs font-bold text-on-surface-variant uppercase tracking-widest">Trạng thái</div>
+                        <div class="col-span-1 text-xs font-bold text-on-surface-variant uppercase tracking-widest text-center">Xóa</div>
                     </div>
 
                     <!-- Nội dung bảng (JS điền vào) -->
