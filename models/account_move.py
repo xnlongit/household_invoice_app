@@ -1,4 +1,5 @@
 from odoo import models, fields, api
+from .store_config import _amount_to_words_vi
 
 
 class AccountMove(models.Model):
@@ -21,3 +22,8 @@ class AccountMove(models.Model):
             if move.move_type == 'out_invoice' and move.name and move.name.startswith('HĐ'):
                 continue
             super(AccountMove, move)._set_next_sequence()
+
+    def _amount_to_words(self):
+        """Return amount_total in Vietnamese words."""
+        self.ensure_one()
+        return _amount_to_words_vi(self.amount_total)

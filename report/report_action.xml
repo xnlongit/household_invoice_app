@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+<data>
+
+    <record id="report_household_invoice" model="ir.actions.report">
+        <field name="name">Hóa đơn bán hàng</field>
+        <field name="model">account.move</field>
+        <field name="report_type">qweb-pdf</field>
+        <field name="report_name">household_invoice_app.report_household_invoice_document</field>
+        <field name="report_file">household_invoice_app.report_household_invoice_document</field>
+        <field name="paperformat_id" ref="base.paperformat_euro"/>
+        <field name="binding_model_id" ref="account.model_account_move"/>
+        <field name="binding_type">report</field>
+    </record>
+
+</data>
+</odoo>

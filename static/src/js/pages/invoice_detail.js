@@ -55,6 +55,14 @@ document.addEventListener('DOMContentLoaded', async function () {
     // Cập nhật title
     document.title = data.name + ' | Hóa đơn';
 
+    // Nút in hóa đơn — luôn hiển thị
+    const btnPrint = document.getElementById('btn-print-invoice');
+    if (btnPrint) {
+        btnPrint.addEventListener('click', function() {
+            window.open('/report/pdf/household_invoice_app.report_household_invoice/' + invoiceId, '_blank');
+        });
+    }
+
     // Nút xóa — chỉ hiện khi nháp
     if (data.status === 'draft') {
         const btnDelete = document.getElementById('btn-delete-invoice');

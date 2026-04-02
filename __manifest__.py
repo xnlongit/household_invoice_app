@@ -6,8 +6,12 @@
     'author': 'Custom',
     'depends': ['base', 'account', 'product', 'uom'],
     'data': [
+        'security/ir.model.access.csv',
+        'views/store_config_views.xml',
         'data/sequence_data.xml',
         'data/res_partner_data.xml',
+        'report/report_action.xml',
+        'report/invoice_report.xml',
         'static/src/templates/common.xml',
         'static/src/templates/page_login.xml',
         'static/src/templates/page_dashboard.xml',
