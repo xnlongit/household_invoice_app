@@ -16,19 +16,27 @@
     <body class="product-page bg-surface text-on-surface min-h-screen">
         <main class="product-page__main min-h-screen">
 
-            <!-- Header tích hợp thanh tìm kiếm -->
+            <!-- Header với nav links -->
             <header class="product-page__header sticky top-0 z-30 bg-surface/80 backdrop-blur-md shadow-sm">
                 <div class="product-page__header-inner flex justify-between items-center w-full px-8 py-4 max-w-7xl mx-auto">
                     <div class="product-page__header-left flex items-center gap-8">
                         <a href="/app/dashboard" class="product-page__brand text-2xl font-extrabold tracking-tight text-primary font-headline">
-                            LedgerCurator
+                            Tuyen Hoa
                         </a>
-                        <!-- Thanh tìm kiếm (desktop) -->
-                        <div class="product-page__search hidden lg:flex items-center bg-surface-container-low rounded-full px-4 py-2 w-80">
-                            <span class="product-page__search-icon material-symbols-outlined text-outline">search</span>
-                            <input class="product-page__search-input bg-transparent border-none focus:ring-0 text-sm w-full placeholder:text-outline-variant outline-none ml-2"
-                                   id="search-input" placeholder="Tìm kiếm sản phẩm..." type="text"/>
-                        </div>
+                        <nav class="hidden lg:flex gap-6">
+                            <a href="/app/dashboard" data-nav="dashboard"
+                               class="text-on-surface-variant font-medium hover:text-primary transition-colors pb-1">
+                                Tổng quan
+                            </a>
+                            <a href="/app/invoices" data-nav="invoices"
+                               class="text-on-surface-variant font-medium hover:text-primary transition-colors pb-1">
+                                Hóa đơn
+                            </a>
+                            <a href="/app/products" data-nav="products"
+                               class="text-on-surface-variant font-medium hover:text-primary transition-colors pb-1">
+                                Sản phẩm
+                            </a>
+                        </nav>
                     </div>
                     <div class="product-page__header-actions flex items-center gap-4">
                         <a href="/app/logout" class="product-page__logout p-2 text-on-surface-variant hover:text-error transition-colors" title="Đăng xuất">
@@ -44,18 +52,18 @@
             <section class="product-page__content px-8 py-6 max-w-7xl mx-auto">
                 <!-- Bảng danh sách sản phẩm -->
                 <div class="product-table bg-surface-container-lowest rounded-xl shadow-sm overflow-hidden">
-                    <!-- Tiêu đề bảng + tìm kiếm mobile -->
+                    <!-- Tiêu đề bảng + thanh tìm kiếm -->
                     <div class="product-table__toolbar p-6 flex flex-col sm:flex-row justify-between items-center gap-4">
-                        <div class="product-table__title-group flex items-center gap-2">
+                        <div class="product-table__title-group flex items-center gap-2 flex-shrink-0">
                             <span class="product-table__title text-lg font-bold font-headline">Danh sách sản phẩm</span>
                             <span class="product-table__count text-xs bg-surface-container text-on-surface-variant px-2 py-1 rounded-full font-bold"
                                   id="product-count">—</span>
                         </div>
-                        <!-- Tìm kiếm (mobile) -->
-                        <div class="product-table__search-mobile flex lg:hidden items-center bg-surface-container-low rounded-full px-4 py-2 w-full">
-                            <span class="product-table__search-mobile-icon material-symbols-outlined text-outline text-sm">search</span>
-                            <input class="product-table__search-mobile-input bg-transparent border-none focus:ring-0 text-sm w-full placeholder:text-outline-variant outline-none ml-2"
-                                   id="search-input-mobile" placeholder="Tìm sản phẩm..." type="text"/>
+                        <!-- Thanh tìm kiếm -->
+                        <div class="flex items-center bg-surface-container-low rounded-full px-4 py-2 w-72">
+                            <span class="material-symbols-outlined text-outline text-sm">search</span>
+                            <input class="bg-transparent border-none focus:ring-0 text-sm w-full placeholder:text-outline-variant outline-none ml-2"
+                                   id="search-input" placeholder="Tìm kiếm sản phẩm..." type="text"/>
                         </div>
                     </div>
 

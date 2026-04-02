@@ -101,7 +101,7 @@
 
         <t t-call="household_invoice_app.mobile_nav"/>
         <script type="text/javascript">window.INVOICE_ID = <t t-esc="invoice_id"/>;</script>
-        <script type="text/javascript" src="/household_invoice_app/static/src/js/pages/invoice_detail.js"/>
+        <script type="text/javascript" src="/household_invoice_app/static/src/js/pages/invoice_detail.js?v=2"></script>
     </body>
     </html>
 </template>

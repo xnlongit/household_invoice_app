@@ -6,9 +6,8 @@ document.addEventListener('DOMContentLoaded', async function () {
 
     // Thống kê
     document.getElementById('stat-revenue').textContent = LC.fmt.currency(data.total_revenue);
-    document.getElementById('stat-outstanding').textContent = LC.fmt.currency(data.total_outstanding);
-    document.getElementById('stat-clients').textContent = data.active_clients;
-    document.getElementById('stat-pending').textContent = data.pending_count + ' chờ';
+    document.getElementById('stat-products').textContent = data.product_count + ' sản phẩm';
+    document.getElementById('stat-draft').textContent = data.draft_count + ' hóa đơn';
 
     // Hóa đơn gần đây
     const tbody = document.getElementById('recent-invoices-body');

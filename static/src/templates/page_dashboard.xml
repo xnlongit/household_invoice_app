@@ -28,22 +28,18 @@
             </section>
 
             <!-- Thống kê nhanh -->
-            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 mb-12">
+            <div class="grid grid-cols-1 sm:grid-cols-3 gap-6 mb-12">
                 <div class="bg-surface-container-low p-6 rounded-lg">
                     <p class="text-sm text-on-surface-variant mb-1 font-medium">Tổng doanh thu</p>
                     <p class="text-3xl font-extrabold font-headline text-on-surface" id="stat-revenue">—</p>
                 </div>
                 <div class="bg-surface-container-low p-6 rounded-lg">
-                    <p class="text-sm text-on-surface-variant mb-1 font-medium">Chưa thanh toán</p>
-                    <p class="text-3xl font-extrabold font-headline text-on-surface" id="stat-outstanding">—</p>
+                    <p class="text-sm text-on-surface-variant mb-1 font-medium">Sản phẩm</p>
+                    <p class="text-3xl font-extrabold font-headline text-on-surface" id="stat-products">—</p>
                 </div>
                 <div class="bg-surface-container-low p-6 rounded-lg">
-                    <p class="text-sm text-on-surface-variant mb-1 font-medium">Khách hàng</p>
-                    <p class="text-3xl font-extrabold font-headline text-on-surface" id="stat-clients">—</p>
-                </div>
-                <div class="bg-surface-container-low p-6 rounded-lg">
-                    <p class="text-sm text-on-surface-variant mb-1 font-medium">Hóa đơn chờ</p>
-                    <p class="text-3xl font-extrabold font-headline text-on-surface" id="stat-pending">—</p>
+                    <p class="text-sm text-on-surface-variant mb-1 font-medium">Hóa đơn nháp</p>
+                    <p class="text-3xl font-extrabold font-headline text-on-surface" id="stat-draft">—</p>
                 </div>
             </div>
 
@@ -142,7 +138,7 @@
         </div>
 
         <t t-call="household_invoice_app.mobile_nav"/>
-        <script type="text/javascript" src="/household_invoice_app/static/src/js/pages/dashboard.js"></script>
+        <script type="text/javascript" src="/household_invoice_app/static/src/js/pages/dashboard.js?v=3"></script>
     </body>
     </html>
 </template>

@@ -75,17 +75,5 @@ document.addEventListener('DOMContentLoaded', function () {
         });
     }
 
-    // Tìm kiếm mobile
-    const searchInputMobile = document.getElementById('search-input-mobile');
-    if (searchInputMobile) {
-        searchInputMobile.addEventListener('input', function () {
-            clearTimeout(searchTimer);
-            searchTimer = setTimeout(function () {
-                currentPage = 1;
-                loadProducts(searchInputMobile.value);
-            }, 350);
-        });
-    }
-
     loadProducts('');
 });

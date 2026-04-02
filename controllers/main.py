@@ -198,27 +198,20 @@ class HouseholdInvoiceApp(http.Controller):
 
         total_revenue = sum(Move.search([
             ('move_type', '=', 'out_invoice'),
-            ('payment_state', 'in', ['paid', 'in_payment']),
+            ('state', '=', 'posted'),
         ]).mapped('amount_total'))
 
-        outstanding_invoices = Move.search([
-            ('move_type', '=', 'out_invoice'),
-            ('state', '=', 'posted'),
-            ('payment_state', 'not in', ['paid', 'reversed', 'in_payment']),
+        product_count = env['product.template'].sudo().search_count([
+            ('sale_ok', '=', True),
         ])
-        total_outstanding = sum(outstanding_invoices.mapped('amount_total'))
 
-        all_inv = Move.search([('move_type', '=', 'out_invoice')])
-        active_clients = len(set(all_inv.mapped('partner_id').ids))
-
-        pending_count = Move.search_count([
+        draft_count = Move.search_count([
             ('move_type', '=', 'out_invoice'),
-            ('state', '=', 'posted'),
-            ('payment_state', 'not in', ['paid', 'reversed']),
+            ('state', '=', 'draft'),
         ])
 
         recent = Move.search([('move_type', '=', 'out_invoice')],
-                             limit=5, order='invoice_date desc, id desc')
+                             limit=10, order='create_date desc, id desc')
         recent_data = [{
             'id': inv.id,
             'name': inv.name,
@@ -231,9 +224,8 @@ class HouseholdInvoiceApp(http.Controller):
 
         return _json_resp({
             'total_revenue': total_revenue,
-            'total_outstanding': total_outstanding,
-            'active_clients': active_clients,
-            'pending_count': pending_count,
+            'product_count': product_count,
+            'draft_count': draft_count,
             'recent_invoices': recent_data,
         })
 
