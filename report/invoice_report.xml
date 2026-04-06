@@ -12,176 +12,214 @@
             <t t-set="inv_year"  t-value="inv_date.year  if inv_date else ''"/>
 
             <main>
-                <!-- div.article: Odoo wrap qua minimal_layout, thêm charset utf-8 cho wkhtmltopdf -->
-                <div class="article" style="font-family: 'Noto Sans', 'DejaVu Sans', sans-serif; font-size: 11pt; color: #222; padding: 20px 28px; box-sizing: border-box;">
+                <div class="article" style="font-family: 'Times New Roman', Times, serif; font-size: 13pt; color: #222; padding: 20px 28px; box-sizing: border-box;">
 
                     <!-- ===== HEADER CỬA HÀNG ===== -->
-                    <div style="text-align: center; margin-bottom: 8px;">
-                        <div style="font-size: 15pt; font-weight: bold; text-transform: uppercase; letter-spacing: 1px;">
-                            <t t-esc="o_config.store_name if o_config else 'CỬA HÀNG'"/>
-                        </div>
-                        <t t-if="o_config and o_config.specialty">
-                            <div style="font-size: 10pt; margin-top: 2px;">Chuyên: <t t-esc="o_config.specialty"/></div>
-                        </t>
-                        <t t-if="o_config and o_config.address">
-                            <div style="font-size: 10pt;">Đ/C: <t t-esc="o_config.address"/></div>
-                        </t>
-                        <t t-if="o_config and o_config.phone">
-                            <div style="font-size: 10pt;">SĐT: <t t-esc="o_config.phone"/></div>
-                        </t>
-                        <t t-if="o_config and (o_config.bank_account or o_config.bank_name or o_config.bank_owner)">
-                            <div style="font-size: 10pt;">
-                                STK:
-                                <t t-if="o_config.bank_account"><t t-esc="o_config.bank_account"/></t>
-                                <t t-if="o_config.bank_name"> - <t t-esc="o_config.bank_name"/></t>
-                                <t t-if="o_config.bank_owner"> - <t t-esc="o_config.bank_owner"/></t>
-                            </div>
-                        </t>
-                    </div>
-
-                    <hr style="border: none; border-top: 1.5px solid #333; margin: 6px 0;"/>
+                    <table class="table table-borderless" style="width: 100%; margin-bottom: 8px;">
+                        <tbody>
+                        <tr>
+                            <!-- Logo -->
+                            <td style="width: 18%; vertical-align: middle; padding-right: 12px; padding-left: 0; padding-top: 0; padding-bottom: 0;">
+                                <t t-if="o_config and o_config.logo_image">
+                                    <img t-att-src="image_data_uri(o_config.logo_image)"
+                                         style="width: 90px; height: 90px; object-fit: contain;"
+                                         alt="Logo"/>
+                                </t>
+                            </td>
+                            <!-- Thông tin cửa hàng -->
+                            <td style="vertical-align: middle; text-align: center; padding: 0;">
+                                <div style="font-size: 16pt; font-weight: bold; text-transform: uppercase; letter-spacing: 1px; line-height: 1.4;">
+                                    <t t-esc="o_config.store_name if o_config else 'CỬA HÀNG'"/>
+                                </div>
+                                <t t-if="o_config and o_config.specialty">
+                                    <div style="font-size: 12pt; font-weight: bold; margin-top: 2px;">
+                                        <t t-esc="o_config.specialty"/>
+                                    </div>
+                                </t>
+                                <t t-if="o_config and o_config.address">
+                                    <div style="font-size: 12pt; margin-top: 3px;">Đ/c: <t t-esc="o_config.address"/></div>
+                                </t>
+                                <t t-if="o_config and o_config.phone">
+                                    <div style="font-size: 12pt;">SĐT: <t t-esc="o_config.phone"/></div>
+                                </t>
+                                <t t-if="o_config and (o_config.bank_account or o_config.bank_name or o_config.bank_owner)">
+                                    <div style="font-size: 12pt;">
+                                        STK:
+                                        <t t-if="o_config.bank_account"><t t-esc="o_config.bank_account"/></t>
+                                        <t t-if="o_config.bank_name"> - <t t-esc="o_config.bank_name"/></t>
+                                        <t t-if="o_config.bank_owner"> - <t t-esc="o_config.bank_owner"/></t>
+                                    </div>
+                                </t>
+                            </td>
+                        </tr>
+                        </tbody>
+                    </table>
 
                     <!-- ===== TIÊU ĐỀ ===== -->
-                    <div style="text-align: center; margin: 10px 0 6px 0;">
-                        <div style="font-size: 15pt; font-weight: bold; text-transform: uppercase; letter-spacing: 2px;">
+                    <div style="text-align: center; margin: 10px 0 4px 0;">
+                        <div style="font-size: 18pt; font-weight: bold; text-transform: uppercase; letter-spacing: 2px;">
                             HÓA ĐƠN BÁN HÀNG
-                        </div>
-                        <div style="font-size: 10pt; margin-top: 4px;">
-                            Số hóa đơn: <strong><t t-esc="o.name"/></strong>
-                            <t t-if="inv_date">
-                                &#160;&#160;&#160;
-                                Ngày <t t-esc="inv_day"/> tháng <t t-esc="inv_month"/> năm <t t-esc="inv_year"/>
-                            </t>
                         </div>
                     </div>
 
+                    <!-- Số hóa đơn + Ngày tháng -->
+                    <table class="table table-borderless" style="width: 100%; margin-bottom: 8px;">
+                        <tbody>
+                        <tr>
+                            <td style="text-align: left; font-size: 12pt; padding: 0;">
+                                Số hóa đơn: <strong><t t-esc="o.name"/></strong>
+                            </td>
+                            <td style="text-align: right; font-size: 12pt; padding: 0;">
+                                <t t-if="inv_date">
+                                    Ngày <t t-esc="inv_day"/> tháng <t t-esc="inv_month"/> năm <t t-esc="inv_year"/>
+                                </t>
+                            </td>
+                        </tr>
+                        </tbody>
+                    </table>
+
                     <!-- ===== THÔNG TIN KHÁCH HÀNG ===== -->
-                    <div style="margin: 10px 0 6px 0; font-size: 10.5pt; line-height: 1.7;">
+                    <div style="margin: 8px 0 6px 0; font-size: 12.5pt; line-height: 1.8;">
                         <div>
                             Khách hàng:
                             <strong><t t-esc="o.customer_name or (o.partner_id.name if o.partner_id else '')"/></strong>
-                            <span style="display: inline-block; width: 60px;"/>
-                            SĐT: .............................
                         </div>
                         <div>
                             Địa chỉ:
                             <t t-if="o.partner_id and o.partner_id.street">
                                 <t t-esc="o.partner_id.street"/>
+                                <t t-if="o.partner_id.city">, <t t-esc="o.partner_id.city"/></t>
                             </t>
                             <t t-else="">.............................................................................................</t>
                         </div>
                         <div>
-                            Diễn Giải:
+                            SDT:
+                            <t t-if="o.partner_id and (o.partner_id.phone or o.partner_id.mobile)">
+                                <t t-esc="o.partner_id.phone or o.partner_id.mobile"/>
+                            </t>
+                            <t t-else="">................................</t>
+                        </div>
+                        <div>
+                            Ghi chú:
                             <t t-if="o.narration"><t t-esc="o.narration"/></t>
                             <t t-else="">.............................................................................................</t>
                         </div>
                     </div>
 
                     <!-- ===== BẢNG SẢN PHẨM ===== -->
-                    <table style="width: 100%; border-collapse: collapse; font-size: 9.5pt; margin-top: 6px;">
+                    <table class="product-table" style="width: 100%; border-collapse: collapse; font-size: 11.5pt; margin-top: 6px;">
                         <thead>
-                            <tr style="background-color: #e0e0e0;">
-                                <th style="border: 1px solid #999; padding: 4px 5px; text-align: center; width: 4%;">STT</th>
-                                <th style="border: 1px solid #999; padding: 4px 5px; text-align: left;   width: 30%;">Tên Hàng</th>
-                                <th style="border: 1px solid #999; padding: 4px 5px; text-align: center; width: 7%;">ĐVT</th>
-                                <th style="border: 1px solid #999; padding: 4px 5px; text-align: center; width: 6%;">SL</th>
-                                <th style="border: 1px solid #999; padding: 4px 5px; text-align: right;  width: 14%;">Đơn Giá</th>
-                                <th style="border: 1px solid #999; padding: 4px 5px; text-align: center; width: 7%;">CK%</th>
-                                <th style="border: 1px solid #999; padding: 4px 5px; text-align: right;  width: 14%;">Giá sau CK</th>
-                                <th style="border: 1px solid #999; padding: 4px 5px; text-align: right;  width: 14%;">Thành Tiền</th>
+                            <tr style="background-color: #f0f0f0;">
+                                <th style="border: 1px solid #999; padding: 4px 5px; text-align: center; width: 5%;">STT</th>
+                                <th style="border: 1px solid #999; padding: 4px 5px; text-align: left;   width: 40%;">Tên Hàng</th>
+                                <th style="border: 1px solid #999; padding: 4px 5px; text-align: center; width: 8%;">SL</th>
+                                <th style="border: 1px solid #999; padding: 4px 5px; text-align: center; width: 10%;">DVT</th>
+                                <th style="border: 1px solid #999; padding: 4px 5px; text-align: right;  width: 18%;">Đơn Giá</th>
+                                <th style="border: 1px solid #999; padding: 4px 5px; text-align: right;  width: 19%;">Thành tiền</th>
                             </tr>
                         </thead>
                         <tbody>
                             <t t-set="stt" t-value="0"/>
                             <t t-foreach="o.invoice_line_ids.filtered(lambda l: l.display_type == 'product')" t-as="line">
                                 <t t-set="stt" t-value="stt + 1"/>
-                                <t t-set="price_after_ck" t-value="line.price_unit * (1.0 - (line.discount or 0.0) / 100.0)"/>
-                                <tr t-att-style="'background-color: ' + ('#f7f7f7' if stt % 2 == 0 else '#fff') + ';'">
+                                <tr>
                                     <td style="border: 1px solid #bbb; padding: 3px 5px; text-align: center;"><t t-esc="stt"/></td>
                                     <td style="border: 1px solid #bbb; padding: 3px 5px;">
                                         <t t-esc="line.product_id.name if line.product_id else line.name"/>
                                     </td>
                                     <td style="border: 1px solid #bbb; padding: 3px 5px; text-align: center;">
-                                        <t t-esc="line.product_uom_id.name if line.product_uom_id else ''"/>
+                                        <t t-esc="'{:,.0f}'.format(line.quantity).replace(',', '.')"/>
                                     </td>
                                     <td style="border: 1px solid #bbb; padding: 3px 5px; text-align: center;">
-                                        <t t-esc="'{:,.0f}'.format(line.quantity).replace(',', '.')"/>
+                                        <t t-esc="line.product_uom_id.name if line.product_uom_id else ''"/>
                                     </td>
                                     <td style="border: 1px solid #bbb; padding: 3px 5px; text-align: right;">
                                         <t t-esc="'{:,.0f}'.format(line.price_unit).replace(',', '.')"/>
                                     </td>
-                                    <td style="border: 1px solid #bbb; padding: 3px 5px; text-align: center;">
-                                        <t t-esc="'{:.0f}'.format(line.discount or 0)"/>
-                                    </td>
                                     <td style="border: 1px solid #bbb; padding: 3px 5px; text-align: right;">
-                                        <t t-esc="'{:,.0f}'.format(price_after_ck).replace(',', '.')"/>
-                                    </td>
-                                    <td style="border: 1px solid #bbb; padding: 3px 5px; text-align: right; font-weight: bold;">
                                         <t t-esc="'{:,.0f}'.format(line.price_subtotal).replace(',', '.')"/>
                                     </td>
+                                </tr>
+                            </t>
+                            <!-- Các dòng trống để đủ trang -->
+                            <t t-set="filled_rows" t-value="o.invoice_line_ids.filtered(lambda l: l.display_type == 'product')"/>
+                            <t t-foreach="range(max(0, 5 - len(filled_rows)))" t-as="blank">
+                                <tr style="height: 22px;">
+                                    <td style="border: 1px solid #bbb; padding: 3px 5px;"> </td>
+                                    <td style="border: 1px solid #bbb; padding: 3px 5px;"> </td>
+                                    <td style="border: 1px solid #bbb; padding: 3px 5px;"> </td>
+                                    <td style="border: 1px solid #bbb; padding: 3px 5px;"> </td>
+                                    <td style="border: 1px solid #bbb; padding: 3px 5px;"> </td>
+                                    <td style="border: 1px solid #bbb; padding: 3px 5px;"> </td>
                                 </tr>
                             </t>
                         </tbody>
                     </table>
 
                     <!-- ===== TỔNG TIỀN ===== -->
-                    <div style="margin-top: 8px; text-align: right; font-size: 10pt; line-height: 1.9;">
-                        <span>Tiền hàng:</span>
-                        <span style="display: inline-block; min-width: 130px; text-align: right;">
-                            <t t-esc="'{:,.0f}'.format(o.amount_untaxed).replace(',', '.')"/> ₫
-                        </span>
-                        <br/>
-                        <t t-if="o.amount_tax and o.amount_tax > 0">
-                            <span>Thuế VAT:</span>
-                            <span style="display: inline-block; min-width: 130px; text-align: right;">
-                                <t t-esc="'{:,.0f}'.format(o.amount_tax).replace(',', '.')"/> ₫
-                            </span>
-                            <br/>
-                        </t>
-                        <strong>
-                            <span>Tổng cộng:</span>
-                            <span style="display: inline-block; min-width: 130px; text-align: right; font-size: 12pt;">
-                                <t t-esc="'{:,.0f}'.format(o.amount_total).replace(',', '.')"/> ₫
-                            </span>
-                        </strong>
+                    <div style="margin-top: 8px; text-align: right; font-size: 12pt; line-height: 2.0;">
+                        <table class="table table-borderless" style="margin-left: auto;">
+                            <tbody>
+                            <tr>
+                                <td style="padding: 0 8px 0 0; text-align: right; min-width: 130px;">Tiền hàng:</td>
+                                <td style="text-align: right; min-width: 140px; padding: 0;">
+                                    <t t-esc="'{:,.0f}'.format(o.amount_untaxed).replace(',', '.')"/>
+                                </td>
+                            </tr>
+                            <t t-if="o.amount_tax and o.amount_tax > 0">
+                                <tr>
+                                    <td style="padding: 0 8px 0 0; text-align: right;">Thuế VAT:</td>
+                                    <td style="text-align: right; padding: 0;">
+                                        <t t-esc="'{:,.0f}'.format(o.amount_tax).replace(',', '.')"/>
+                                    </td>
+                                </tr>
+                            </t>
+                            <tr>
+                                <td style="padding: 0 8px 0 0; text-align: right;">Công nợ cũ:</td>
+                                <td style="text-align: right; padding: 0;">0</td>
+                            </tr>
+                            <tr>
+                                <td style="padding: 0 8px 0 0; text-align: right; font-weight: bold; font-size: 13pt;">Tổng cộng:</td>
+                                <td style="text-align: right; font-weight: bold; font-size: 13pt; padding: 0;">
+                                    <t t-esc="'{:,.0f}'.format(o.amount_total).replace(',', '.')"/>
+                                </td>
+                            </tr>
+                            </tbody>
+                        </table>
                     </div>
 
                     <!-- ===== SỐ TIỀN BẰNG CHỮ ===== -->
-                    <div style="margin-top: 8px; font-size: 10pt; font-style: italic;">
+                    <div style="margin-top: 8px; font-size: 12pt;">
                         Số tiền viết bằng chữ: <strong><t t-esc="o._amount_to_words()"/></strong>
                     </div>
 
                     <!-- ===== NGÀY XUẤT ===== -->
-                    <div style="margin-top: 4px; font-size: 10pt;">
+                    <div style="margin-top: 4px; font-size: 12pt;">
                         <t t-if="inv_date">
-                            Xuất ngày: Ngày <t t-esc="inv_day"/> tháng <t t-esc="inv_month"/> năm <t t-esc="inv_year"/>
+                            Xuất ngày:&#160;&#160;&#160;Ngày <t t-esc="inv_day"/> tháng <t t-esc="inv_month"/> năm <t t-esc="inv_year"/>
                         </t>
                     </div>
 
                     <!-- ===== KÝ TÊN ===== -->
-                    <table style="width: 100%; border-collapse: collapse; margin-top: 20px; font-size: 10pt; text-align: center;">
+                    <table class="table table-borderless" style="width: 100%; margin-top: 24px; font-size: 12pt; text-align: center;">
+                        <tbody>
                         <tr>
-                            <td style="width: 20%; padding: 0 4px; vertical-align: top;">
+                            <td style="width: 25%; padding: 0 4px; vertical-align: top;">
                                 <div style="font-weight: bold;">Người bán hàng</div>
-                                <div style="font-size: 8.5pt; color: #666; margin-top: 2px;">(Ký và ghi rõ họ tên)</div>
-                                <div style="height: 65px;"/>
+                                <div style="font-size: 10.5pt; color: #666; margin-top: 2px;">(ký và ghi rõ họ tên)</div>
+                                <div style="height: 70px;"/>
                             </td>
-                            <td style="width: 20%; padding: 0 4px; vertical-align: top;">
-                                <div style="font-weight: bold;">Thủ kho</div>
-                                <div style="font-size: 8.5pt; color: #666; margin-top: 2px;">(Ký và ghi rõ họ tên)</div>
-                                <div style="height: 65px;"/>
-                            </td>
-                            <td style="width: 20%; padding: 0 4px; vertical-align: top;">
+                            <td style="width: 25%; padding: 0 4px; vertical-align: top;">
                                 <div style="font-weight: bold;">Người mua hàng</div>
-                                <div style="font-size: 8.5pt; color: #666; margin-top: 2px;">(Ký và ghi rõ họ tên)</div>
-                                <div style="height: 65px;"/>
+                                <div style="font-size: 10.5pt; color: #666; margin-top: 2px;">(ký và ghi rõ họ tên)</div>
+                                <div style="height: 70px;"/>
                             </td>
-                            <td style="width: 20%; padding: 0 4px; vertical-align: top;">
+                            <td style="width: 25%; padding: 0 4px; vertical-align: top;">
                                 <div style="font-weight: bold;">Kế toán</div>
-                                <div style="font-size: 8.5pt; color: #666; margin-top: 2px;">(Ký và ghi rõ họ tên)</div>
-                                <div style="height: 65px;"/>
+                                <div style="font-size: 10.5pt; color: #666; margin-top: 2px;">(ký và ghi rõ họ tên)</div>
+                                <div style="height: 70px;"/>
                             </td>
-                            <td style="width: 20%; padding: 0 4px; vertical-align: top;">
+                            <td style="width: 25%; padding: 0 4px; vertical-align: top;">
                                 <div style="font-weight: bold;">Mã QR thanh toán</div>
                                 <t t-if="o_config and o_config.qr_image">
                                     <div style="margin-top: 4px;">
@@ -191,10 +229,11 @@
                                     </div>
                                 </t>
                                 <t t-else="">
-                                    <div style="width: 90px; height: 90px; border: 1px dashed #aaa; margin: 4px auto; font-size: 8pt; color: #aaa; line-height: 90px;">QR</div>
+                                    <div style="width: 90px; height: 90px; border: 1px dashed #aaa; margin: 4px auto; font-size: 10pt; color: #aaa;">QR</div>
                                 </t>
                             </td>
                         </tr>
+                        </tbody>
                     </table>
 
                 </div><!-- end .article -->

@@ -125,6 +125,7 @@ class HouseholdStoreConfig(models.Model):
     bank_name = fields.Char(string='Tên ngân hàng')
     bank_owner = fields.Char(string='Chủ tài khoản')
     qr_image = fields.Binary(string='Mã QR thanh toán', attachment=True)
+    logo_image = fields.Binary(string='Logo cửa hàng', attachment=True)
 
     @api.model
     def get_config(cls):
