@@ -86,22 +86,17 @@
                         </div>
                         <div>
                             Địa chỉ:
-                            <t t-if="o.partner_id and o.partner_id.street">
-                                <t t-esc="o.partner_id.street"/>
-                                <t t-if="o.partner_id.city">, <t t-esc="o.partner_id.city"/></t>
-                            </t>
+                            <t t-if="o.customer_address"><t t-esc="o.customer_address"/></t>
                             <t t-else="">.............................................................................................</t>
                         </div>
                         <div>
                             SDT:
-                            <t t-if="o.partner_id and (o.partner_id.phone or o.partner_id.mobile)">
-                                <t t-esc="o.partner_id.phone or o.partner_id.mobile"/>
-                            </t>
+                            <t t-if="o.customer_phone"><t t-esc="o.customer_phone"/></t>
                             <t t-else="">................................</t>
                         </div>
                         <div>
                             Ghi chú:
-                            <t t-if="o.narration"><t t-esc="o.narration"/></t>
+                            <t t-if="o.customer_note"><t t-esc="o.customer_note"/></t>
                             <t t-else="">.............................................................................................</t>
                         </div>
                     </div>

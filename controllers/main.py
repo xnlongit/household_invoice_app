@@ -301,7 +301,10 @@ class HouseholdInvoiceApp(http.Controller):
         return _json_resp({
             'id': inv.id,
             'name': inv.name,
-            'customer_name': inv.customer_name or inv.partner_id.name or '',
+            'customer_name':    inv.customer_name or inv.partner_id.name or '',
+            'customer_address': inv.customer_address or '',
+            'customer_phone':   inv.customer_phone or '',
+            'customer_note':    inv.customer_note or '',
             'invoice_date': inv.invoice_date.strftime('%d/%m/%Y') if inv.invoice_date else '',
             'status': _invoice_status(inv),
             'amount_untaxed': inv.amount_untaxed,
@@ -318,7 +321,10 @@ class HouseholdInvoiceApp(http.Controller):
             return err
         try:
             data = json.loads(request.httprequest.data or b'{}')
-            customer_name = (data.get('customer_name') or '').strip()
+            customer_name    = (data.get('customer_name') or '').strip()
+            customer_address = (data.get('customer_address') or '').strip()
+            customer_phone   = (data.get('customer_phone') or '').strip()
+            customer_note    = (data.get('customer_note') or '').strip()
             invoice_date = (data.get('invoice_date') or '').strip() or date.today().isoformat()
             lines = data.get('lines') or []
 
@@ -356,7 +362,10 @@ class HouseholdInvoiceApp(http.Controller):
             invoice = env['account.move'].sudo().create({
                 'move_type': 'out_invoice',
                 'partner_id': retail_partner.id,
-                'customer_name': customer_name or False,
+                'customer_name':    customer_name or False,
+                'customer_address': customer_address or False,
+                'customer_phone':   customer_phone or False,
+                'customer_note':    customer_note or False,
                 'invoice_date': invoice_date,
                 'invoice_line_ids': invoice_lines,
             })

@@ -23,6 +23,22 @@ document.addEventListener('DOMContentLoaded', async function () {
     document.getElementById('inv-customer').textContent = data.customer_name || '—';
     document.getElementById('inv-date').textContent = data.invoice_date || '—';
 
+    if (data.customer_address) {
+        document.getElementById('inv-address').textContent = data.customer_address;
+        document.getElementById('inv-address-wrap').classList.remove('hidden');
+        document.getElementById('inv-address-wrap').classList.add('flex');
+    }
+    if (data.customer_phone) {
+        document.getElementById('inv-phone').textContent = data.customer_phone;
+        document.getElementById('inv-phone-wrap').classList.remove('hidden');
+        document.getElementById('inv-phone-wrap').classList.add('flex');
+    }
+    if (data.customer_note) {
+        document.getElementById('inv-note').textContent = data.customer_note;
+        document.getElementById('inv-note-wrap').classList.remove('hidden');
+        document.getElementById('inv-note-wrap').classList.add('flex');
+    }
+
     const status = STATUS_MAP[data.status] || { label: data.status, cls: 'bg-surface-container text-on-surface-variant' };
     const badge = document.getElementById('inv-status-badge');
     badge.textContent = status.label;

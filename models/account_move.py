@@ -5,7 +5,10 @@ from .store_config import _amount_to_words_vi
 class AccountMove(models.Model):
     _inherit = 'account.move'
 
-    customer_name = fields.Char(string='Tên khách hàng (bán lẻ)')
+    customer_name    = fields.Char(string='Tên khách hàng (bán lẻ)')
+    customer_address = fields.Char(string='Địa chỉ khách hàng')
+    customer_phone   = fields.Char(string='Số điện thoại khách hàng')
+    customer_note    = fields.Char(string='Ghi chú khách hàng')
 
     @api.model_create_multi
     def create(self, vals_list):

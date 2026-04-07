@@ -48,6 +48,18 @@
                                 <span class="material-symbols-outlined text-sm">calendar_today</span>
                                 <span id="inv-date" class="font-medium">—</span>
                             </div>
+                            <div id="inv-address-wrap" class="hidden items-center gap-2">
+                                <span class="material-symbols-outlined text-sm">location_on</span>
+                                <span id="inv-address" class="font-medium">—</span>
+                            </div>
+                            <div id="inv-phone-wrap" class="hidden items-center gap-2">
+                                <span class="material-symbols-outlined text-sm">phone</span>
+                                <span id="inv-phone" class="font-medium">—</span>
+                            </div>
+                            <div id="inv-note-wrap" class="hidden items-center gap-2">
+                                <span class="material-symbols-outlined text-sm">notes</span>
+                                <span id="inv-note" class="font-medium">—</span>
+                            </div>
                         </div>
                     </div>
                     <div class="flex items-center gap-3">

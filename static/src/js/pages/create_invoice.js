@@ -235,7 +235,10 @@ document.addEventListener('DOMContentLoaded', function () {
     document.getElementById('btn-submit').addEventListener('click', async function () {
         if (lineItems.length === 0) { LC.toast('Vui lòng thêm ít nhất một sản phẩm', 'error'); return; }
 
-        const customerName = document.getElementById('customer-name').value.trim();
+        const customerName    = document.getElementById('customer-name').value.trim();
+        const customerAddress = document.getElementById('customer-address').value.trim();
+        const customerPhone   = document.getElementById('customer-phone').value.trim();
+        const customerNote    = document.getElementById('customer-note').value.trim();
         // type="date" trả về yyyy-mm-dd trực tiếp
         const invoiceDate = document.getElementById('invoice-date').value.trim();
 
@@ -253,7 +256,14 @@ document.addEventListener('DOMContentLoaded', function () {
         });
         const data = await LC.api('/app/api/invoices/create', {
             method: 'POST',
-            body: JSON.stringify({ customer_name: customerName, invoice_date: invoiceDate, lines: payload }),
+            body: JSON.stringify({
+                customer_name:    customerName,
+                customer_address: customerAddress,
+                customer_phone:   customerPhone,
+                customer_note:    customerNote,
+                invoice_date: invoiceDate,
+                lines: payload,
+            }),
         });
 
         if (!data) return;
