@@ -101,18 +101,26 @@
                                 <label class="text-xs font-bold uppercase tracking-widest text-on-surface-variant px-1">
                                     Thêm sản phẩm
                                 </label>
-                                <div class="grid grid-cols-1 md:grid-cols-12 gap-4 items-end">
+                                <div class="grid grid-cols-1 md:grid-cols-12 gap-3 items-end">
                                     <!-- Tìm sản phẩm -->
-                                    <div class="md:col-span-4 relative" id="product-search-container">
+                                    <div class="md:col-span-3 relative" id="product-search-container">
                                         <span class="material-symbols-outlined absolute left-3 top-1/2 -translate-y-1/2 text-outline z-10">search</span>
                                         <input class="w-full pl-10 pr-4 py-3 bg-surface-container-lowest border-none ring-1 ring-outline-variant/20 rounded-lg focus:ring-2 focus:ring-primary transition-all outline-none"
                                                id="product-search" placeholder="Tìm sản phẩm..." type="text" autocomplete="off"/>
                                         <div id="product-dropdown" class="hidden"></div>
                                     </div>
-                                    <!-- Số lượng -->
-                                    <div class="md:col-span-2">
-                                        <input class="w-full px-4 py-3 bg-surface-container-lowest border-none ring-1 ring-outline-variant/20 rounded-lg focus:ring-2 focus:ring-primary transition-all outline-none text-center"
+                                    <!-- Số lượng (thu hẹp) -->
+                                    <div class="md:col-span-1">
+                                        <input class="w-full px-2 py-3 bg-surface-container-lowest border-none ring-1 ring-outline-variant/20 rounded-lg focus:ring-2 focus:ring-primary transition-all outline-none text-center"
                                                id="product-qty" min="1" placeholder="SL" type="number" value="1"/>
+                                    </div>
+                                    <!-- Đơn vị tính -->
+                                    <div class="md:col-span-2 relative" id="add-uom-container">
+                                        <input class="w-full px-3 py-3 bg-surface-container-lowest border-none ring-1 ring-outline-variant/20 rounded-lg focus:ring-2 focus:ring-primary transition-all outline-none"
+                                               id="add-uom-input" placeholder="ĐVT..." type="text" autocomplete="off"/>
+                                        <div id="add-uom-dropdown"
+                                             class="hidden absolute z-30 top-full left-0 right-0 mt-1 bg-surface-container-lowest rounded-lg shadow-lg ring-1 ring-outline-variant/20 max-h-48 overflow-y-auto">
+                                        </div>
                                     </div>
                                     <!-- Đơn giá -->
                                     <div class="md:col-span-2">
@@ -141,15 +149,18 @@
 
                         <!-- Bảng dòng sản phẩm -->
                         <div class="bg-surface-container-lowest rounded-xl overflow-hidden shadow-sm">
-                            <div class="bg-surface-container-highest px-6 py-3 flex items-center">
-                                <div style="width:37%;flex-shrink:0" class="text-xs font-bold uppercase tracking-widest text-on-surface-variant">Mô tả</div>
-                                <div style="width:9%;flex-shrink:0;text-align:center" class="text-xs font-bold uppercase tracking-widest text-on-surface-variant">SL</div>
-                                <div style="width:16%;flex-shrink:0;text-align:right" class="text-xs font-bold uppercase tracking-widest text-on-surface-variant">Đơn giá</div>
-                                <div style="width:22%;flex-shrink:0;text-align:right" class="text-xs font-bold uppercase tracking-widest text-on-surface-variant">Thuế</div>
-                                <div style="width:12%;flex-shrink:0;text-align:right" class="text-xs font-bold uppercase tracking-widest text-on-surface-variant">Thành tiền</div>
-                                <div style="width:4%;flex-shrink:0"></div>
+                            <div style="display:table;width:100%;border-collapse:collapse;" class="bg-surface-container-highest">
+                                <div style="display:table-row;">
+                                    <div style="display:table-cell;width:32%;padding:10px 8px 10px 24px;" class="text-xs font-bold uppercase tracking-widest text-on-surface-variant">Mô tả</div>
+                                    <div style="display:table-cell;width:8%;padding:10px 4px;text-align:center;" class="text-xs font-bold uppercase tracking-widest text-on-surface-variant">SL</div>
+                                    <div style="display:table-cell;width:10%;padding:10px 4px;text-align:center;" class="text-xs font-bold uppercase tracking-widest text-on-surface-variant">ĐVT</div>
+                                    <div style="display:table-cell;width:14%;padding:10px 4px;text-align:right;" class="text-xs font-bold uppercase tracking-widest text-on-surface-variant">Đơn giá</div>
+                                    <div style="display:table-cell;width:20%;padding:10px 8px;text-align:right;" class="text-xs font-bold uppercase tracking-widest text-on-surface-variant">Thuế</div>
+                                    <div style="display:table-cell;width:12%;padding:10px 8px;text-align:right;" class="text-xs font-bold uppercase tracking-widest text-on-surface-variant">Thành tiền</div>
+                                    <div style="display:table-cell;width:4%;padding:10px 8px 10px 0;"></div>
+                                </div>
                             </div>
-                            <div class="divide-y divide-surface-container-low" id="line-items-body">
+                            <div id="line-items-body">
                                 <div class="px-6 py-8 text-center text-on-surface-variant text-sm">
                                     Chưa có sản phẩm. Thêm sản phẩm vào hóa đơn bên trên.
                                 </div>

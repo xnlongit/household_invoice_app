@@ -294,6 +294,7 @@ class HouseholdInvoiceApp(http.Controller):
                 'id': line.id,
                 'description': line.name or '',
                 'quantity': line.quantity,
+                'uom_name': line.product_uom_id.name if line.product_uom_id else '',
                 'price_unit': line.price_unit,
                 'price_subtotal': line.price_subtotal,
                 'taxes': [{'id': t.id, 'name': t.name, 'amount': t.amount} for t in line.tax_ids],
@@ -436,7 +437,9 @@ class HouseholdInvoiceApp(http.Controller):
                 'list_price': p.list_price,
                 'default_code': p.default_code or '',
                 'categ_name': p.categ_id.name if p.categ_id else '',
+                'uom_id': p.uom_id.id if p.uom_id else False,
                 'uom_name': p.uom_id.name if p.uom_id else '',
+                'uom_category_id': p.uom_id.category_id.id if p.uom_id else False,
                 'taxes': [{'id': t.id, 'name': t.name, 'amount': t.amount} for t in p.taxes_id],
             })
 
@@ -446,4 +449,22 @@ class HouseholdInvoiceApp(http.Controller):
             'page': page,
             'limit': limit,
             'total_pages': max(1, (total + limit - 1) // limit),
+        })
+
+    @http.route('/app/api/uoms', type='http', auth='public', methods=['GET'], website=False)
+    def api_uoms(self, category_id='', search='', **kw):
+        err = _require_session()
+        if err:
+            return err
+        domain = [('active', '=', True)]
+        if category_id:
+            try:
+                domain.append(('category_id', '=', int(category_id)))
+            except (ValueError, TypeError):
+                pass
+        if search:
+            domain.append(('name', 'ilike', search))
+        uoms = request.env['uom.uom'].sudo().search(domain, limit=100, order='name asc')
+        return _json_resp({
+            'data': [{'id': u.id, 'name': u.name} for u in uoms],
         })

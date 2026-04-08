@@ -80,12 +80,15 @@
                 <!-- Bảng dòng sản phẩm -->
                 <div class="bg-surface-container-lowest rounded-xl overflow-hidden shadow-sm mb-8">
                     <!-- Header -->
-                    <div class="bg-surface-container-highest px-6 py-3 flex items-center">
-                        <div class="w-[37%] text-xs font-bold uppercase tracking-widest text-on-surface-variant">Mô tả</div>
-                        <div class="w-[9%] text-xs font-bold uppercase tracking-widest text-on-surface-variant text-center">SL</div>
-                        <div class="w-[16%] text-xs font-bold uppercase tracking-widest text-on-surface-variant text-right">Đơn giá</div>
-                        <div class="w-[22%] text-xs font-bold uppercase tracking-widest text-on-surface-variant text-right">Thuế</div>
-                        <div class="w-[16%] text-xs font-bold uppercase tracking-widest text-on-surface-variant text-right">Thành tiền</div>
+                    <div style="display:table;width:100%;border-collapse:collapse;" class="bg-surface-container-highest">
+                        <div style="display:table-row;">
+                            <div style="display:table-cell;width:32%;padding:10px 8px 10px 24px;" class="text-xs font-bold uppercase tracking-widest text-on-surface-variant">Mô tả</div>
+                            <div style="display:table-cell;width:8%;padding:10px 4px;text-align:center;" class="text-xs font-bold uppercase tracking-widest text-on-surface-variant">SL</div>
+                            <div style="display:table-cell;width:10%;padding:10px 4px;text-align:center;" class="text-xs font-bold uppercase tracking-widest text-on-surface-variant">ĐVT</div>
+                            <div style="display:table-cell;width:14%;padding:10px 4px;text-align:right;" class="text-xs font-bold uppercase tracking-widest text-on-surface-variant">Đơn giá</div>
+                            <div style="display:table-cell;width:20%;padding:10px 8px;text-align:right;" class="text-xs font-bold uppercase tracking-widest text-on-surface-variant">Thuế</div>
+                            <div style="display:table-cell;width:16%;padding:10px 24px 10px 8px;text-align:right;" class="text-xs font-bold uppercase tracking-widest text-on-surface-variant">Thành tiền</div>
+                        </div>
                     </div>
                     <!-- Rows -->
                     <div id="inv-lines" class="divide-y divide-surface-container-low"></div>

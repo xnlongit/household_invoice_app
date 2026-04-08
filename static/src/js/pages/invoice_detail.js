@@ -49,17 +49,22 @@ document.addEventListener('DOMContentLoaded', async function () {
     if (!data.lines || data.lines.length === 0) {
         linesEl.innerHTML = '<div class="px-6 py-8 text-center text-on-surface-variant text-sm">Không có dòng sản phẩm.</div>';
     } else {
+        linesEl.style.display = 'table';
+        linesEl.style.width = '100%';
+        linesEl.style.borderCollapse = 'collapse';
         linesEl.innerHTML = data.lines.map(function (line) {
             const taxLabel = line.taxes && line.taxes.length
                 ? line.taxes.map(function(t) { return t.name; }).join(', ')
                 : '—';
-            return `<div class="px-6 py-5 flex items-center hover:bg-surface-container-low/20 transition-colors">
-                <div class="w-[37%] font-semibold text-on-surface">${line.description}</div>
-                <div class="w-[9%] text-center text-on-surface-variant">${line.quantity}</div>
-                <div class="w-[16%] text-right text-on-surface-variant">${LC.fmt.currency(line.price_unit)}</div>
-                <div class="w-[22%] text-right text-sm text-on-surface-variant">${taxLabel}</div>
-                <div class="w-[16%] text-right font-bold text-primary">${LC.fmt.currency(line.price_subtotal)}</div>
-            </div>`;
+            const uomLabel = line.uom_name || '—';
+            return '<div style="display:table-row;" class="hover:bg-surface-container-low/20 transition-colors">'
+                + '<div style="display:table-cell;width:32%;padding:14px 8px 14px 24px;" class="font-semibold text-on-surface">' + escapeHtml(line.description) + '</div>'
+                + '<div style="display:table-cell;width:8%;padding:14px 4px;text-align:center;" class="text-on-surface-variant">' + line.quantity + '</div>'
+                + '<div style="display:table-cell;width:10%;padding:14px 4px;text-align:center;" class="text-sm text-on-surface-variant">' + escapeHtml(uomLabel) + '</div>'
+                + '<div style="display:table-cell;width:14%;padding:14px 4px;text-align:right;" class="text-on-surface-variant">' + LC.fmt.currency(line.price_unit) + '</div>'
+                + '<div style="display:table-cell;width:20%;padding:14px 8px;text-align:right;" class="text-sm text-on-surface-variant">' + escapeHtml(taxLabel) + '</div>'
+                + '<div style="display:table-cell;width:16%;padding:14px 24px 14px 8px;text-align:right;" class="font-bold text-primary">' + LC.fmt.currency(line.price_subtotal) + '</div>'
+                + '</div>';
         }).join('');
     }
 
@@ -99,4 +104,8 @@ document.addEventListener('DOMContentLoaded', async function () {
 function showError() {
     document.getElementById('invoice-loading').classList.add('hidden');
     document.getElementById('invoice-error').classList.remove('hidden');
+}
+
+function escapeHtml(s) {
+    return String(s).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
 }
